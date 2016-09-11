@@ -4,6 +4,7 @@ var draw = require('./draw');
 
 var $ = require('jquery');
 
+
 //写入控制菜单
 var menus = require('./html/menu.html');
 var scale = require('./html/scale.html');
