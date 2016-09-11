@@ -1,0 +1,21 @@
+{
+  "name": "web-ruler",
+  "version": "1.0.0",
+  "description": "tb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ruler"
+  ],
+  "author": "tb",
+  "license": "ISC",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-less": "^3.1.0",
+    "redux": "^3.5.2",
+    "tmodjs-loader": "^1.0.1",
+    "webpack": "^1.13.1"
+  }
+}

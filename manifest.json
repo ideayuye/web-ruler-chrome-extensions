@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+
+  "name": "web ruler",
+  "description": "This extension shows a Google Image search result for the current page",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+  "permissions": [
+    "activeTab",
+    "desktopCapture",
+    "https://ajax.googleapis.com/"
+  ],
+  "background":{
+      "persistent":false,
+      "scripts": ["index.js"]
+  }
+}
