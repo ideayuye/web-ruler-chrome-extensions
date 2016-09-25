@@ -14,9 +14,6 @@ var LengthMark = function(ctx) {
         y: 0,
         isOK: 0
     };
-    //在显示屏上的坐标
-    this.vP1 = {x:0,y:0};
-    this.vP2 = {x:0,y:0};
     this.dir = "";
     this.setP1 = function(x, y) {
         this.p1.x = x + 0.5;
@@ -80,8 +77,8 @@ LengthMark.prototype.length = function() {
 //计算长度标记的位置
 LengthMark.prototype.calMarkPos = function() {
     var dir = this.dir,
-        p1 = this.vP1,
-        p2 = this.vP2;
+        p1 = this.p1,
+        p2 = this.p2;
     var x, y;
     if (dir == "v") {
         x = p1.x;
@@ -110,14 +107,7 @@ LengthMark.prototype.judgeDir = function(x, y) {
     }
 };
 
-//把存储坐标映射到显示屏坐标
-LengthMark.prototype.mapCoords = function(mapFun){
-        var _ = this;
-        var p1 = _.p1;
-        _.vP1 = mapFun(p1.x,p1.y);
-        var p2 = _.p2;
-        _.vP2 = mapFun(p2.x,p2.y);
-    };
+
 
 /*处理输入的数据 */
 LengthMark.prototype.process = function(data) {
@@ -144,11 +134,15 @@ LengthMark.prototype.process = function(data) {
 };
 
 
-LengthMark.prototype.draw = function(level) {
+LengthMark.prototype.draw = function(transform) {
     var _ = this;
     if (_.step < 2)
         return;    
     var ctx = _.ctx;
+    var scale = transform.scale;
+    //手动平移量
+    var ox = transform.offsetX;
+    var oy = transform.offsetY;
     ctx.save();
     if(_.light){
         ctx.shadowColor = "#666666";
@@ -158,6 +152,8 @@ LengthMark.prototype.draw = function(level) {
     if(_.isRetina){
         ctx.lineWidth =2;
     }
+    ctx.scale(scale,scale);
+    ctx.translate(ox,oy);
     _.drawMark();
     _.drawNode();
     _.light && _.drawEars();
@@ -169,8 +165,8 @@ LengthMark.prototype.draw = function(level) {
 /*绘制节点 */
 LengthMark.prototype.drawNode = function() {
     var ctx = this.ctx,
-        p1 = this.vP1,
-        p2 = this.vP2,
+        p1 = this.p1,
+        p2 = this.p2,
         hh = 5;
     ctx.beginPath();
     if(this.isRetina){
@@ -197,8 +193,8 @@ LengthMark.prototype.drawMark = function() {
     var ctx = this.ctx,
         me = this,
         length = this.length(),
-        p1 = this.vP1,
-        p2 = this.vP2;
+        p1 = this.p1,
+        p2 = this.p2;
     
     ctx.font = "16px arial";
     if(me.isRetina){
@@ -277,8 +273,8 @@ LengthMark.prototype.drawMark = function() {
 /*绘制虚线*/ 
 LengthMark.prototype.drawDottedLine = function() {
     var ctx = this.ctx,
-        p1 = this.vP1,
-        p2 = this.vP2;
+        p1 = this.p1,
+        p2 = this.p2;
     ctx.save();
     ctx.beginPath();
     ctx.setLineDash([5]);
@@ -302,8 +298,8 @@ LengthMark.prototype.drawDottedLine = function() {
 
 /*绘制耳朵*/ 
 LengthMark.prototype.calEars = function(){
-    var p1 = Object.assign({}, this.vP1),
-        p2 = Object.assign({}, this.vP2),
+    var p1 = Object.assign({}, this.p1),
+        p2 = Object.assign({}, this.p2),
         dir = this.dir,
         _ = this,
         muli = _.isRetina?2:1;
@@ -415,8 +411,6 @@ LengthMark.prototype.earTouch = function(x,y){
         dir = this.dir,
         earSize = 10;
     if(_.isRetina){
-        x = x*2;
-        y = y*2;
         earSize = earSize*2;
     }
     //计算耳朵位置

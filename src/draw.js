@@ -165,7 +165,9 @@ dw.zoomOut = function(){
 /*背景绘制*/
 dw.drawCache = function () {
     bCanvas.context.clearRect(0, 0, bCanvas.ww,bCanvas.wh);
-    map.bg.drawBG();
+    map.bg.drawBG(zoom.getTranState());
+    map.curLayer.draw(isRetina);
+    map.tempLayer.draw(isRetina);
 };
 
 var animationFrame = null;
@@ -174,10 +176,12 @@ var animate = function () {
     var box = zoom.viewBox;
     var ctx = vCanvas.context;
     if(box){
+        dw.drawCache();
         ctx.clearRect(0, 0, vCanvas.ww,vCanvas.wh);
-        ctx.drawImage(bCanvas.canvas, box.sx, box.sy, box.sw, box.sh, box.dx, box.dy, box.dw, box.dh);
+        ctx.drawImage(bCanvas.canvas,0,0, vCanvas.ww,vCanvas.wh);
+        /*ctx.drawImage(bCanvas.canvas, box.sx, box.sy, box.sw, box.sh, box.dx, box.dy, box.dw, box.dh);
         map.curLayer.draw(isRetina);
-        map.tempLayer.draw(isRetina);
+        map.tempLayer.draw(isRetina);*/
     }
     animationFrame = window.requestAnimationFrame(animate);
 };

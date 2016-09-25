@@ -26,8 +26,7 @@ Layer.prototype.draw=function(isRetina) {
         //坐标转换到显示区坐标 
         var path = this.paths[p];
         path.isRetina = isRetina;
-        path.mapCoords(zoom.genReTransCoord());   
-        path.draw(zoom.level);
+        path.draw(zoom.getTranState());
     }
 };
 
@@ -44,7 +43,7 @@ Layer.prototype.hitTest = function(dt){
         if(!isFind){
             if( path.hitTest(x,y)){
                 this.selectedPath  = path;
-                path.earTouch(ox,oy);
+                path.earTouch(x,y);
                 path.setLight();
                 isFind = 1;    
             }

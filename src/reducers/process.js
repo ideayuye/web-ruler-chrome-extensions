@@ -12,7 +12,7 @@ var process = function (state, action) {
     switch (action.type) {
         case "1_mousedown":
             if (!state.curPath) {
-                state.curPath = new LengthMark(map.viewCtx);
+                state.curPath = new LengthMark(map.cacheCtx);
                 map.tempLayer.addPath(state.curPath);
                 state.curPath.process(action.data);
                 state.isUpdate = true;

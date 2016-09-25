@@ -15,7 +15,9 @@ var zoom = {
     mw:0,
     mh:0,
     isRetina:false,
-    viewBox :null
+    viewBox :null,
+    offsetX :0,
+    offsetY :0
 };
 
 zoom.init = function (ww,wh,isRetina) {
@@ -82,21 +84,11 @@ zoom.transCoord = function(x,y){
         x = 2*x;
         y = 2*y;
     }
-    nc.x = x/_.level+(_.center.x-_.ww*.5/_.level);
-    nc.y = y/_.level+(_.center.y-_.wh*.5/_.level);
+    nc.x = (x +_.mw*(_.level-1)*0.5 - _.offsetX)/_.level;
+    nc.y = (y +_.mh*(_.level-1)*0.5 - _.offsetY)/_.level;
     return nc;
 };
 
-/*生成坐标反计算函数*/ 
-zoom.genReTransCoord = function(){
-    var _ = this; 
-    return function(x,y){
-        var nc = {x:0,y:0};
-        nc.x = (x-_.center.x+_.ww*0.5/_.level)*_.level;
-        nc.y = (y-_.center.y+_.wh*0.5/_.level)*_.level;
-        return nc;
-    };
-};
 
 /*放大*/
 zoom.zoomIn = function(){
@@ -118,7 +110,28 @@ zoom.move = function(mx,my){
     }
     this.center.x += mx/this.level;
     this.center.y += my/this.level;
+    this.offsetX -= mx;
+    this.offsetY -= my;
 };
 
+/*
+*@description 计算图形状态 偏移量 缩放比例
+*/
+zoom.getTranState=function(){
+    var _=this;
+    //调整因为缩放引起的偏移
+    var mx = -_.mw*(_.level-1)*0.5/_.level;
+    var my = -_.mh*(_.level-1)*0.5/_.level;
+    //手动偏移量
+    mx = mx + _.offsetX/_.level;
+    my = my + _.offsetY/_.level;
+    return{
+        scale:_.level,
+        offsetX:mx,
+        offsetY:my
+    }
+}
+
 module.exports = zoom; 
+
 
