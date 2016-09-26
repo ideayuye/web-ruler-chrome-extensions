@@ -1,9 +1,7 @@
 
 var Mousetrap = require('./libs/mousetrap.js');
 var draw = require('./draw');
-
 var $ = require('jquery');
-
 
 //写入控制菜单
 var menus = require('./html/menu.html');
@@ -20,11 +18,26 @@ var initDraw = function () {
     document.body.appendChild(container);
     draw.appendCanvasToBody();
     bindMenu();
+    bindCursorChange();
 };
+
+var bindCursorChange = function () {
+    var $rulerPanel = $('#ruler-panel');
+    draw.ep.on('cursorChange', function (cursor) {
+        switch(cursor){
+            case 0:
+                 $rulerPanel.removeAttr('class');
+                break;
+            case 1:
+                $rulerPanel.removeAttr('class').addClass('pan');
+                break;
+        }
+        
+    });
+}
 
 //绑定菜单事件
 var bindMenu = function () {
-    var $rulerPanel = $('#ruler-panel');
     var menuZI = $('.scale-panel .zoom-in');
     var menuZO = $('.scale-panel .zoom-out');
     var menuPan = $('#menu_pan');
@@ -45,14 +58,14 @@ var bindMenu = function () {
         draw.action = 2;
         var menu = e.target;
         lightMenu(menu);
-        $rulerPanel.removeAttr('class').addClass('pan');
+        draw.setCursor();
     }
 
     var measure = function (e) {
         draw.action = 1;
         var menu = e.target;
         lightMenu(menu);
-        $rulerPanel.removeAttr('class');
+        draw.setCursor();
     }
 
     menuZI.click (() => {

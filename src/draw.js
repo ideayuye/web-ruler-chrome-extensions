@@ -1,5 +1,6 @@
 
 var $ = require('jquery');
+var EventProxy = require('eventproxy');
 var zoom = require('./zoom.js');
 var process = require('./reducers/combineReducers.js');
 var CommomCanvas = require('./libs/CommonCanvas.js');
@@ -23,7 +24,14 @@ var dw = {
         2-平移图片
         3-选取对象
     */
-    action: 1
+    action: 1,
+    /*
+        当前鼠标状态
+        0-默认
+        1-移动状态
+    */
+    cursor: 0,
+    ep:new EventProxy()
 };
 
 /*初始state*/
@@ -126,9 +134,30 @@ dw.bindDraw = function () {
     });
 };
 
+
+
+//设置鼠标状态
+dw.setCursor = function(){
+    var oldCursor = this.cursor;
+    if (map.getSelectedPath()) {
+        this.cursor = 0;
+    }else{
+        if(this.action == 2){
+            this.cursor = 1;
+        }else{
+            this.cursor = 0;
+        }
+    }
+    if(oldCursor != this.cursor){
+        this.ep.emit('cursorChange',this.cursor);
+    }
+}
+
+
 dw.bindStore = function () {
     store = createStore(process, initState);
     store.subscribe(function () {
+        dw.setCursor();
         // 需要时刷新图形
         var state = store.getState();
         draw = state && state.draw;
@@ -147,6 +176,7 @@ dw.bindStore = function () {
         }
     });
 };
+
 
 dw.deletePath = function(){
     var path = map.getSelectedPath();
