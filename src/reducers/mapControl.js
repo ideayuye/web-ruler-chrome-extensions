@@ -36,6 +36,15 @@ var mapControl = function (state, action) {
             zoom.zoomOut();
             state.isUpdate = true;
             return state;
+        case "zoom_in_ani":
+            zoom.zoomInAni();
+            state.isUpdate = true;
+            return state;
+        case "zoom_out_ani":
+            zoom.zoomOutAni();
+            state.isUpdate = true;
+            return state
+
         default:
             return state;
     }

@@ -23,6 +23,7 @@ bg.setBG = function (screenShot) {
     this.imgH = image.height;
 }
 
+var zoom  = require('./zoom.js');
 
 //背景图
 bg.drawBG = function(transform){
@@ -34,13 +35,13 @@ bg.drawBG = function(transform){
     var oy = transform.offsetY;
     if(_.background){
         ctx.save();
-        ctx.scale(scale,scale);
         ctx.translate(ox,oy);
+        ctx.scale(scale,scale);
         ctx.drawImage(_.background,0,0,_.imgW,_.imgH);
         //绘制中心点
-        /*ctx.beginPath();
-        ctx.arc(_.imgW*0.5, _.imgH*0.5, 10, 0, 2 * Math.PI);
-        ctx.fill();*/
+        ctx.beginPath();
+        ctx.arc(_.imgW*0.5, _.imgH*0.5, 3, 0, 2 * Math.PI);
+        ctx.fill();
         ctx.restore();
     }
 };

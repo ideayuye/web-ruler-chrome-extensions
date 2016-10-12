@@ -7,6 +7,7 @@ var CommomCanvas = require('./libs/CommonCanvas.js');
 var createStore = require('redux').createStore;
 var map = require('./map.js');
 var interpreter = require('./libs/interpreter.js');
+var TWEEN = require('tween.js');
 var os = require('./detectOS')(),
     isMac = os === "Mac",
     dpr = window.devicePixelRatio,
@@ -170,7 +171,6 @@ dw.bindStore = function () {
         var state = store.getState();
         control = state && state.control;
         if (control && control.isUpdate) {
-            zoom.calViewBox();
             //计算坐标
             control.isUpdate = false;
         }
@@ -185,34 +185,45 @@ dw.deletePath = function(){
 }
 
 dw.zoomIn = function(){
-    store.dispatch({ type: 'zoom_in'});
+    // store.dispatch({ type: 'zoom_in'});
+    zoom.zoomIn();
 };
 
 dw.zoomOut = function(){
-    store.dispatch({type: 'zoom_out'});
+    // store.dispatch({type: 'zoom_out'});
+    zoom.zoomOut();
+};
+
+dw.zoomInAni = function(){
+    // store.dispatch({ type: 'zoom_in_ani'});
+    return  zoom.zoomInAni();
+};
+
+dw.zoomOutAni = function(){
+    return zoom.zoomOutAni();
+    // store.dispatch({type: 'zoom_out_ani'});
 };
 
 /*背景绘制*/
 dw.drawCache = function () {
     bCanvas.context.clearRect(0, 0, bCanvas.ww,bCanvas.wh);
-    map.bg.drawBG(zoom.getTranState());
+    map.bg && map.bg.drawBG(zoom.getTranState());
     map.curLayer.draw(isRetina);
     map.tempLayer.draw(isRetina);
+    
 };
 
 var animationFrame = null;
 /*启动动画*/
 var animate = function () {
-    var box = zoom.viewBox;
     var ctx = vCanvas.context;
-    if(box){
-        dw.drawCache();
-        ctx.clearRect(0, 0, vCanvas.ww,vCanvas.wh);
-        ctx.drawImage(bCanvas.canvas,0,0, vCanvas.ww,vCanvas.wh);
-        /*ctx.drawImage(bCanvas.canvas, box.sx, box.sy, box.sw, box.sh, box.dx, box.dy, box.dw, box.dh);
-        map.curLayer.draw(isRetina);
-        map.tempLayer.draw(isRetina);*/
-    }
+    TWEEN.update();
+    dw.drawCache();
+    ctx.clearRect(0, 0, vCanvas.ww,vCanvas.wh);
+    ctx.drawImage(bCanvas.canvas,0,0, vCanvas.ww,vCanvas.wh);
+    ctx.beginPath();
+    ctx.arc(vCanvas.ww*0.5,vCanvas.wh*0.5,7,0,Math.PI*2);
+    ctx.stroke();
     animationFrame = window.requestAnimationFrame(animate);
 };
 

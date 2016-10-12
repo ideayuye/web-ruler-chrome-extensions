@@ -152,8 +152,8 @@ LengthMark.prototype.draw = function(transform) {
     if(_.isRetina){
         ctx.lineWidth =2;
     }
-    ctx.scale(scale,scale);
     ctx.translate(ox,oy);
+    ctx.scale(scale,scale);
     _.drawMark();
     _.drawNode();
     _.light && _.drawEars();

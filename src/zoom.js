@@ -3,11 +3,12 @@
 根据缩放的等级 计算可视区域
 */
 
+var TWEEN = require('tween.js');
+var Q     = require('q');
+
 var zoom = {
     /*等级从1到10，1是1：1的*/
     level:1,
-    /*中心点*/
-    center:{x:0,y:0},
     //显示屏宽高
     ww:0,
     wh:0,
@@ -17,17 +18,16 @@ var zoom = {
     isRetina:false,
     viewBox :null,
     offsetX :0,
-    offsetY :0
+    offsetY :0,
+    //缩放系数
+    zoomFactor : 1.4
 };
 
 zoom.init = function (ww,wh,isRetina) {
     var _ = this;
-    _.center.x = ww*0.5;
-    _.center.y = wh*0.5;
     _.ww = ww;
     _.wh = wh;
     _.isRetina = isRetina;
-    _.calViewBox();
 };
 
 /*
@@ -37,43 +37,8 @@ zoom.setCenter=function(mw,mh){
     var _ = this;
     this.mw = mw;
     this.mh = mh;
-    this.center.x = mw*0.5;
-    this.center.y = mh*0.5;
 };
 
-/*
-计算可视区域 转化可视区域到
-*/
-zoom.calViewBox = function () {
-    var _ = this;
-    var box = {
-        sx:0,
-        sy:0,
-        sw:0,
-        sh:0,
-        dx:0,
-        dy:0,
-        dw:_.ww,
-        dh:_.wh
-    }
-
-    box.sw = _.ww/_.level;
-    box.sx = _.center.x -  box.sw*0.5;
-    box.sh = _.wh/_.level;
-    box.sy = _.center.y - box.sh*0.5;
-
-    if(box.sx < 0 ){
-        box.dx = -box.sx;
-        box.sx = 0;
-    }
-
-    if(box.sy < 0){
-        box.dy = -box.sy;
-        box.sy = 0;
-    }
-
-    _.viewBox = box;
-};
 
 /*坐标变换*/
 zoom.transCoord = function(x,y){
@@ -84,8 +49,8 @@ zoom.transCoord = function(x,y){
         x = 2*x;
         y = 2*y;
     }
-    nc.x = (x +_.mw*(_.level-1)*0.5 - _.offsetX)/_.level;
-    nc.y = (y +_.mh*(_.level-1)*0.5 - _.offsetY)/_.level;
+    nc.x = (x +_.mw*(_.level-1)*0.5 )/_.level -_.offsetX*(_.level-1)/_.level - _.offsetX/_.level;
+    nc.y = (y +_.mh*(_.level-1)*0.5 )/_.level -_.offsetY*(_.level-1)/_.level - _.offsetY/_.level;
     return nc;
 };
 
@@ -100,7 +65,52 @@ zoom.zoomIn = function(){
 zoom.zoomOut = function(){
     if(this.level > 1)
         this.level--;
+};
+
+zoom.zoomInAni = function () {
+    var _ = this;
+    var end = _.zoomFactor*_.level;
+        end = end > 10? 10:end;
+    return Q.Promise(function (resolve, reject) {
+        if (_.level < 10) {
+            _.zoomAnimate(_.level, end).done(function(){
+                resolve();
+            });
+        }else{
+            reject();
+        }
+    });
 }
+
+zoom.zoomOutAni = function(){
+    var _ = this;
+    var end = _.level/_.zoomFactor;
+        end = end < 1? 1:end;
+    return Q.Promise(function (resolve, reject) {
+        if (_.level > 1) {
+            _.zoomAnimate(_.level, end).done(function(){
+                resolve();
+            });
+        }else{
+            reject();
+        }
+    });
+}
+
+zoom.zoomAnimate = function (start, end) {
+    var _ = this;
+    return Q.Promise(function (resolve, reject) {
+        (new TWEEN.Tween({ level: start }))
+            .to({ level: end }, 300)
+            .onUpdate(function () {
+                _.level = this.level;
+            })
+            .onComplete(function () {
+                resolve();
+            })
+            .start();
+    });
+};
 
 /*平移*/
 zoom.move = function(mx,my){
@@ -108,29 +118,37 @@ zoom.move = function(mx,my){
         mx = mx*2;
         my = my*2;
     }
-    this.center.x += mx/this.level;
-    this.center.y += my/this.level;
-    this.offsetX -= mx;
-    this.offsetY -= my;
+    this.offsetX -= mx/this.level;
+    this.offsetY -= my/this.level;
 };
+
 
 /*
 *@description 计算图形状态 偏移量 缩放比例
 */
 zoom.getTranState=function(){
     var _=this;
-    //调整因为缩放引起的偏移
-    var mx = -_.mw*(_.level-1)*0.5/_.level;
-    var my = -_.mh*(_.level-1)*0.5/_.level;
+    //调整因为缩放引起的中心点便宜
+    var mx = 0,my = 0;
+    //调整因为缩放引起的偏移 
+    mx = -_.mw*(_.level-1)*0.5 ;
+    my = -_.mh*(_.level-1)*0.5 ;
+
+    //添加考虑当前中心点位置
+    mx += _.offsetX*(_.level-1);
+    my += _.offsetY*(_.level-1);
+
     //手动偏移量
-    mx = mx + _.offsetX/_.level;
-    my = my + _.offsetY/_.level;
+    mx = mx + _.offsetX;
+    my = my + _.offsetY;
+
     return{
         scale:_.level,
         offsetX:mx,
         offsetY:my
     }
 }
+
 
 module.exports = zoom; 
 

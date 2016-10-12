@@ -7,10 +7,11 @@ var $ = require('jquery');
 var menus = require('./html/menu.html');
 var scale = require('./html/scale.html');
 var container = document.createElement('div');
+var progress;//缩放比例尺
 var $container = $(container);
-$container.addClass('ruler-fix-bar').addClass('clearfix');
-$container.append(scale());
-$container.append(menus());
+    $container.addClass('ruler-fix-bar').addClass('clearfix');
+    $container.append(scale());
+    $container.append(menus());
 
 draw.init();
 
@@ -43,7 +44,7 @@ var bindMenu = function () {
     var menuPan = $('#menu_pan');
     var menuMeasure = $("#menu_measure");
     var menuClose = $('#menu_close');
-    var progress = $('.scale-panel progress');
+        progress = $('.scale-panel progress');
 
     var lightMenu = function (menu) {
         var list = document.querySelectorAll('#TMK_menus li');
@@ -109,9 +110,8 @@ var bindMenu = function () {
 var getScreenShot = function () {
     chrome.runtime.sendMessage({ n: "sall" }, function (response) {
         initDraw();
-        draw.start();
         draw.setScreenShotUrl(response);
-        // console.log('end:',Date.now());
+        draw.start();
     });
 }
 
@@ -129,6 +129,35 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     return true;
 });
 
+var freezeZoom = 0;
+var mouseWheelZoom = function (e) {
+    e.preventDefault();
+    //+ 缩小  -放大
+    if(freezeZoom )
+        return;
+    switch (e.deltaY) {
+        case 100:
+            freezeZoom = 1;
+            draw.zoomOutAni().then(function () {
+                progress.val(draw.getLevel());
+            }).finally(function(){
+                freezeZoom = 0;
+            });
+            break;
+        case -100:
+            freezeZoom = 1;
+            draw.zoomInAni().then(function () {
+                progress.val(draw.getLevel());
+            }).finally(function(){
+                freezeZoom = 0;
+            });
+            break;
+        default:
+            break;
+    }
+}
+
+window.addEventListener('mousewheel',mouseWheelZoom);
 
 //关闭ruler
 var close = function () {
@@ -138,5 +167,6 @@ var close = function () {
     draw.stop();
     //解除事件
     Mousetrap.reset();
+    window.removeEventListener('mousewheel',mouseWheelZoom);
 }
 
