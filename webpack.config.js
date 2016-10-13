@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var path = require('path');
 var buildPath = path.resolve(__dirname, "");
 var nodemodulesPath = path.resolve(__dirname, 'node_modules');
+var NODE_ENV = process.env.NODE_ENV;
 
 var config = {
     //入口文件配置
@@ -16,6 +17,7 @@ var config = {
         path: buildPath,
         filename: "content_script.js"
     },
+    
     module: {
         loaders: [
             {
@@ -25,6 +27,18 @@ var config = {
             }
         ]
     }
+}
+
+if(NODE_ENV === "prod"){
+    delete config.devtool;
+    config.plugins = [
+    //压缩打包的文件
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        //supresses warnings, usually from module minification
+        warnings: false
+      }
+    })];
 }
 
 module.exports = config;

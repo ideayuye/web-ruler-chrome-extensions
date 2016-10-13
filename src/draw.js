@@ -184,16 +184,6 @@ dw.deletePath = function(){
         map.curLayer.remove(path.id);
 }
 
-dw.zoomIn = function(){
-    // store.dispatch({ type: 'zoom_in'});
-    zoom.zoomIn();
-};
-
-dw.zoomOut = function(){
-    // store.dispatch({type: 'zoom_out'});
-    zoom.zoomOut();
-};
-
 dw.zoomInAni = function(){
     // store.dispatch({ type: 'zoom_in_ani'});
     return  zoom.zoomInAni();
@@ -221,9 +211,10 @@ var animate = function () {
     dw.drawCache();
     ctx.clearRect(0, 0, vCanvas.ww,vCanvas.wh);
     ctx.drawImage(bCanvas.canvas,0,0, vCanvas.ww,vCanvas.wh);
-    ctx.beginPath();
+    //绘制中心点 辅助计算坐标
+    /*ctx.beginPath();
     ctx.arc(vCanvas.ww*0.5,vCanvas.wh*0.5,7,0,Math.PI*2);
-    ctx.stroke();
+    ctx.stroke();*/
     animationFrame = window.requestAnimationFrame(animate);
 };
 

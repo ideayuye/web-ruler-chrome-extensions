@@ -28,23 +28,14 @@ var mapControl = function (state, action) {
         case "2_mouseup":
             state.isPan = 0;
             return state;
-        case "zoom_in":
-            zoom.zoomIn();
-            state.isUpdate = true;
-            return state;
-        case "zoom_out":
-            zoom.zoomOut();
-            state.isUpdate = true;
-            return state;
-        case "zoom_in_ani":
+        /*case "zoom_in_ani":
             zoom.zoomInAni();
             state.isUpdate = true;
             return state;
         case "zoom_out_ani":
             zoom.zoomOutAni();
             state.isUpdate = true;
-            return state
-
+            return state*/
         default:
             return state;
     }

@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "web ruler",
-  "description": "This extension shows a Google Image search result for the current page",
+  "description": "a ruler to measure web page",
   "version": "1.0",
 
   "browser_action": {
@@ -10,11 +10,14 @@
   },
   "permissions": [
     "activeTab",
-    "desktopCapture",
-    "https://ajax.googleapis.com/"
+    "desktopCapture"
   ],
   "background":{
       "persistent":false,
       "scripts": ["index.js"]
+  },
+  "icons":{
+    "48":"icon.png"
   }
+
 }
