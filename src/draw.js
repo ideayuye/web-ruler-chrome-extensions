@@ -221,6 +221,7 @@ var animate = function () {
 dw.stop = function(){
     window.cancelAnimationFrame(animationFrame);
     map.clear();
+    zoom.reset();
 };
 
 dw.start = function(){

@@ -23,6 +23,12 @@ var zoom = {
     zoomFactor : 1.4
 };
 
+zoom.reset=function(){
+    this.level =1;
+    this.offsetX = 0;
+    this.offsetY = 0;
+};
+
 zoom.init = function (ww,wh,isRetina) {
     var _ = this;
     _.ww = ww;
