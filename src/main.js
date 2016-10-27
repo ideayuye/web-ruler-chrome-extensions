@@ -108,7 +108,14 @@ var freezeZoom = 0;
 var mouseWheelZoom = function (e) {
     e.preventDefault();
     //+ 缩小  -放大
-    switch (e.deltaY) {
+    var delta = e.wheelDelta;
+    if(delta>0){
+        zoomOut();
+    }
+    if(delta < 0 ){
+        zoomIn();
+    }
+    /*switch (e.deltaY) {
         case 100:
             zoomOut();
             break;
@@ -117,7 +124,7 @@ var mouseWheelZoom = function (e) {
             break;
         default:
             break;
-    }
+    }*/
 }
 
 var zoomOut = function () {
