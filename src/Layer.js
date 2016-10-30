@@ -20,12 +20,12 @@ Layer.prototype.clear = function(){
     this.paths = {};
 }
 
-Layer.prototype.draw=function(isRetina) {
+Layer.prototype.draw=function(dpr) {
     for (var p in this.paths) {
         //计算图形是否展示
         //坐标转换到显示区坐标 
         var path = this.paths[p];
-        path.isRetina = isRetina;
+        path.dpr = dpr;
         path.draw(zoom.getTranState());
     }
 };

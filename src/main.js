@@ -151,8 +151,11 @@ var zoomIn = function () {
 
 var getScreenShot = function () {
     chrome.runtime.sendMessage({ n: "sall" }, function (response) {
+        var screenshot = response.screenshot;
+        var dpr = response.dpr;
+        draw.setDpr(dpr);
         initDraw();
-        draw.setScreenShotUrl(response);
+        draw.setScreenShotUrl(screenshot);
         draw.start();
         window.addEventListener('mousewheel', mouseWheelZoom);
     });

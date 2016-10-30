@@ -8,10 +8,9 @@ var createStore = require('redux').createStore;
 var map = require('./map.js');
 var interpreter = require('./libs/interpreter.js');
 var TWEEN = require('tween.js');
-var os = require('./detectOS')(),
-    isMac = os === "Mac",
-    dpr = window.devicePixelRatio,
-    isRetina = isMac && dpr == 2,
+var detector = require('./detector'),
+    isMac = detector.os === "Mac",
+    isMobile = detector.isMobile ,
     vCanvas = null,
     bCanvas = null,
     store = null;
@@ -32,7 +31,8 @@ var dw = {
         1-移动状态
     */
     cursor: 0,
-    ep:new EventProxy()
+    ep:new EventProxy(),
+    dpr : 1
 };
 
 /*初始state*/
@@ -79,6 +79,10 @@ dw.init = function () {
     animate();
 }
 
+dw.setDpr = function(dpr){
+    this.dpr = dpr;
+}
+
 dw.appendCanvasToBody=function(){
     document.body.appendChild(vCanvas.canvas);
 }
@@ -93,9 +97,9 @@ dw.setScreenShotUrl = function (screenShot) {
         image.src = screenShot;
     var imgW = image.width,
         imgH = image.height;
-    bCanvas.setBox(imgW, imgH,isRetina);
-    vCanvas.setBox(imgW, imgH,isRetina);
-    zoom.init(imgW, imgH,isRetina);
+    bCanvas.setBox(imgW, imgH,this.dpr);
+    vCanvas.setBox(imgW, imgH,this.dpr);
+    zoom.init(imgW, imgH,this.dpr);
     zoom.setCenter(imgW, imgH);
 
     store.dispatch({ type: 'setbackground', screenShot: screenShot });
@@ -105,6 +109,13 @@ dw.setScreenShotUrl = function (screenShot) {
 dw.bindDraw = function () {
     var that = this;
     var wrapperData = function (type, e) {
+        if(isMobile){
+            var touch = e.touches && e.touches.length ? e.touches[0]:touch;
+            if(touch){
+                e.x = touch.pageX;
+                e.y = touch.pageY;
+            }
+        }
         var x = e.x||e.offsetX||0;
             y = e.y||e.offsetY||0;
         var ne = zoom.transCoord(x, y);
@@ -198,8 +209,8 @@ dw.zoomOutAni = function(){
 dw.drawCache = function () {
     bCanvas.context.clearRect(0, 0, bCanvas.ww,bCanvas.wh);
     map.bg && map.bg.drawBG(zoom.getTranState());
-    map.curLayer.draw(isRetina);
-    map.tempLayer.draw(isRetina);
+    map.curLayer.draw(this.dpr);
+    map.tempLayer.draw(this.dpr);
     
 };
 

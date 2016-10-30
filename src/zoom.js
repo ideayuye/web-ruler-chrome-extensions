@@ -15,12 +15,12 @@ var zoom = {
     //全景宽高
     mw:0,
     mh:0,
-    isRetina:false,
     viewBox :null,
     offsetX :0,
     offsetY :0,
     //缩放系数
-    zoomFactor : 1.4
+    zoomFactor : 1.4,
+    dpr :1
 };
 
 zoom.reset=function(){
@@ -29,11 +29,11 @@ zoom.reset=function(){
     this.offsetY = 0;
 };
 
-zoom.init = function (ww,wh,isRetina) {
+zoom.init = function (ww,wh,dpr) {
     var _ = this;
     _.ww = ww;
     _.wh = wh;
-    _.isRetina = isRetina;
+    _.dpr = dpr;
 };
 
 /*
@@ -51,10 +51,9 @@ zoom.transCoord = function(x,y){
     // 更具中心点 缩放比例 计算新坐标位置
     var nc = {x:0,y:0};
     var _ = this;
-    if(_.isRetina){
-        x = 2*x;
-        y = 2*y;
-    }
+        x = x*_.dpr;
+        y = y*_.dpr;
+    
     nc.x = (x +_.mw*(_.level-1)*0.5 )/_.level -_.offsetX*(_.level-1)/_.level - _.offsetX/_.level;
     nc.y = (y +_.mh*(_.level-1)*0.5 )/_.level -_.offsetY*(_.level-1)/_.level - _.offsetY/_.level;
     return nc;
@@ -120,10 +119,9 @@ zoom.zoomAnimate = function (start, end) {
 
 /*平移*/
 zoom.move = function(mx,my){
-    if(this.isRetina){
-        mx = mx*2;
-        my = my*2;
-    }
+    mx = mx*this.dpr;
+    my = my*this.dpr;
+    
     this.offsetX -= mx/this.level;
     this.offsetY -= my/this.level;
 };

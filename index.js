@@ -2,7 +2,11 @@
 
 var listener = function (message, sender, sendResponse) {
     chrome.tabs.captureVisibleTab({ format: 'png' }, function (screenshotUrl) {
-        sendResponse(screenshotUrl);
+        var dpr = window.devicePixelRatio;
+        sendResponse({
+            screenshot: screenshotUrl,
+            dpr:dpr
+        });
     });
     return true;
 };

@@ -2,7 +2,7 @@
 
 var LengthMark = function(ctx) {
     this.ctx = ctx;
-    this.isRetina = false;
+    this.dpr = 1;
     this.id = "lm_" + (new Date()).valueOf();
     this.p1 = {
         x: 0,
@@ -126,7 +126,9 @@ LengthMark.prototype.process = function(data) {
             break;
         case "mouseup":
             if (this.step == 2) {
-                this.setP2(data.x, data.y);
+                //在移动端弹起事件，没有坐标值，故不设置值
+                if(data.x || data.y)
+                    this.setP2(data.x, data.y);
                 this.step = 3;
             }
             break;
@@ -148,10 +150,7 @@ LengthMark.prototype.draw = function(transform) {
         ctx.shadowColor = "#666666";
         ctx.shadowBlur = 10;
     }
-    ctx.lineWidth = 1;
-    if(_.isRetina){
-        ctx.lineWidth =2;
-    }
+    ctx.lineWidth = 1*_.dpr;
     ctx.translate(ox,oy);
     ctx.scale(scale,scale);
     _.drawMark();
@@ -167,11 +166,8 @@ LengthMark.prototype.drawNode = function() {
     var ctx = this.ctx,
         p1 = this.p1,
         p2 = this.p2,
-        hh = 5;
+        hh = 5*this.dpr;
     ctx.beginPath();
-    if(this.isRetina){
-        hh = 10;
-    }
     if (this.dir == "v") {
         ctx.moveTo(p1.x - hh, p1.y);
         ctx.lineTo(p1.x + hh, p1.y);
@@ -196,10 +192,7 @@ LengthMark.prototype.drawMark = function() {
         p1 = this.p1,
         p2 = this.p2;
     
-    ctx.font = "16px arial";
-    if(me.isRetina){
-        ctx.font = "32px arial";
-    }
+    ctx.font = parseInt(16*this.dpr)+"px arial";
 
     var mtxt = this.ctx.measureText(length);
     ctx.strokeStyle = '#FE1616';
@@ -255,7 +248,7 @@ LengthMark.prototype.drawMark = function() {
     this.calMarkPos();
     if(length > 20){
         mx = this.markPos.x - mtxt.width * 0.5;
-        my = this.isRetina? this.markPos.y+12 : this.markPos.y + 6;
+        my = this.markPos.y + 6*this.dpr;
     }else{
         if (this.dir == "v") {
             mx = this.markPos.x + 10;
@@ -302,7 +295,7 @@ LengthMark.prototype.calEars = function(){
         p2 = Object.assign({}, this.p2),
         dir = this.dir,
         _ = this,
-        muli = _.isRetina?2:1;
+        muli = _.dpr;
     var le = {node:_.p1,},
         re = {node:_.p2};
 
@@ -343,9 +336,7 @@ LengthMark.prototype.drawEars = function(){
     var ctx = this.ctx,
         _ = this;
     var ears = _.calEars();
-    var earSize = 10;
-    if(_.isRetina)
-        earSize = 20;
+    var earSize = 10*_.dpr;
     ctx.strokeRect(ears.e1.x,ears.e1.y,earSize,earSize);
     ctx.strokeRect(ears.e2.x,ears.e2.y,earSize,earSize);
     //选中高亮
@@ -376,10 +367,9 @@ LengthMark.prototype.hitTest = function(x,y){
         p2 = _.p2,
         buffer = 5,
         el = 20;//感应扩大到耳朵位置
-    if(_.isRetina){
-        el *= 2;
-        buffer *= 2;
-    }
+        el *= _.dpr;
+        buffer *= _.dpr;
+    
     if(dir == "v"){
         var hitx = p1.x - buffer <= x && p1.x + buffer >= x ;
         var hity = ( p1.y-el <= y && p2.y+el >= y ) || ( p2.y-el <= y && p1.y+el >= y );
@@ -409,10 +399,8 @@ LengthMark.prototype.lightEar = 0;//0-没有选中
 LengthMark.prototype.earTouch = function(x,y){
     var _ = this,
         dir = this.dir,
-        earSize = 10;
-    if(_.isRetina){
-        earSize = earSize*2;
-    }
+        earSize = 10*_.dpr;
+
     //计算耳朵位置
     var ears = _.calEars(),
         e1 = ears.e1,

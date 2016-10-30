@@ -2,8 +2,10 @@
 function detectOS() {
     var sUserAgent = navigator.userAgent;
 
+
     var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
-    var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
+    var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") 
+    || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
     if (isMac) return "Mac";
     var isUnix = (navigator.platform == "X11") && !isWin && !isMac;
     if (isUnix) return "Unix";
@@ -27,7 +29,20 @@ function detectOS() {
         var isWin7 = sUserAgent.indexOf("Windows NT 6.1") > -1 || sUserAgent.indexOf("Windows 7") > -1;
         if (isWin7) return "Win7";
     }
+
     return "other";
 }
 
-module.exports = detectOS;
+var isMobile = function(){
+    var sUserAgent = navigator.userAgent;
+
+    var isIOS = /iPhone|iPad|iPod/i.test(sUserAgent);
+    var isAndroid = /Android/i.test(sUserAgent);
+    var isMobile = isAndroid || isIOS;
+    return isMobile;
+}
+
+module.exports = {
+    os : detectOS(),
+    isMobile : isMobile() 
+}
