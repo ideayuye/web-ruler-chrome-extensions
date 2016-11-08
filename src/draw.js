@@ -112,8 +112,8 @@ dw.bindDraw = function () {
         if(isMobile){
             var touch = e.touches && e.touches.length ? e.touches[0]:touch;
             if(touch){
-                e.x = touch.pageX;
-                e.y = touch.pageY;
+                e.x = touch.clientX;
+                e.y = touch.clientY;
             }
         }
         var x = e.x||e.offsetX||0;
