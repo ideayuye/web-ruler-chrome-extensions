@@ -33,7 +33,6 @@ var bindCursorChange = function () {
                 $rulerPanel.removeAttr('class').addClass('pan');
                 break;
         }
-
     });
 }
 
