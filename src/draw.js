@@ -54,7 +54,6 @@ var initState = {
         lastX:0,
         lastY:0,
         isNodeMove :0
-
     }
 }
 
@@ -95,14 +94,17 @@ dw.getLevel = function(){
 dw.setScreenShotUrl = function (screenShot) {
     var image = new Image();
         image.src = screenShot;
-    var imgW = image.width,
-        imgH = image.height;
-    bCanvas.setBox(imgW, imgH,this.dpr);
-    vCanvas.setBox(imgW, imgH,this.dpr);
-    zoom.init(imgW, imgH,this.dpr);
-    zoom.setCenter(imgW, imgH);
+        image.onload=()=>{
+            var imgW = image.width,
+                imgH = image.height;
+                console.log(imgW,imgH,'nii',image)
+            bCanvas.setBox(imgW, imgH,this.dpr);
+            vCanvas.setBox(imgW, imgH,this.dpr);
+            zoom.init(imgW, imgH,this.dpr);
+            zoom.setCenter(imgW, imgH);
 
-    store.dispatch({ type: 'setbackground', screenShot: screenShot });
+            store.dispatch({ type: 'setbackground', screenShot: screenShot });
+        }
 }
 
 /*绑定绘制动作*/
