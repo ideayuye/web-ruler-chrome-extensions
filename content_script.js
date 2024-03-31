@@ -42,125 +42,133 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	
-	var Mousetrap = __webpack_require__(43);
-	var draw = __webpack_require__(39);
-	var $ = __webpack_require__(5);
+	var Mousetrap = __webpack_require__(44);
+	var draw = __webpack_require__(40);
+	var $ = __webpack_require__(4);
 	
 	//写入控制菜单
-	var menus = __webpack_require__(33);
-	var scale = __webpack_require__(34);
-	var container = document.createElement('div');
-	var progress;//缩放比例尺
+	var menus = __webpack_require__(34);
+	var scale = __webpack_require__(35);
+	var container = document.createElement("div");
+	var progress; //缩放比例尺
 	var $container = $(container);
-	$container.addClass('ruler-fix-bar').addClass('clearfix');
+	$container.addClass("ruler-fix-bar").addClass("clearfix");
 	$container.append(scale());
 	$container.append(menus());
 	
 	draw.init();
 	
 	var initDraw = function () {
-	    document.body.appendChild(container);
-	    draw.appendCanvasToBody();
-	    bindMenu();
-	    bindCursorChange();
+	  document.body.appendChild(container);
+	  draw.appendCanvasToBody();
+	  bindMenu();
+	  bindCursorChange();
 	};
 	
 	var bindCursorChange = function () {
-	    var $rulerPanel = $('#ruler-panel');
-	    draw.ep.on('cursorChange', function (cursor) {
-	        switch (cursor) {
-	            case 0:
-	                $rulerPanel.removeAttr('class');
-	                break;
-	            case 1:
-	                $rulerPanel.removeAttr('class').addClass('pan');
-	                break;
-	        }
-	    });
-	}
+	  var $rulerPanel = $("#ruler-panel");
+	  draw.ep.on("cursorChange", function (cursor) {
+	    switch (cursor) {
+	      case 0:
+	        $rulerPanel.removeAttr("class");
+	        break;
+	      case 1:
+	        $rulerPanel.removeAttr("class").addClass("pan");
+	        break;
+	    }
+	  });
+	};
 	
 	//绑定菜单事件
 	var bindMenu = function () {
-	    var menuZI = $('.scale-panel .zoom-in');
-	    var menuZO = $('.scale-panel .zoom-out');
-	    var menuPan = $('#menu_pan');
-	    var menuMeasure = $("#menu_measure");
-	    var menuClose = $('#menu_close');
-	    progress = $('.scale-panel progress');
+	  var menuZI = $(".scale-panel .zoom-in");
+	  var menuZO = $(".scale-panel .zoom-out");
+	  var menuPan = $("#menu_pan");
+	  var menuMeasure = $("#menu_measure");
+	  var menuClose = $("#menu_close");
+	  progress = $(".scale-panel progress");
 	
-	    var lightMenu = function (menu) {
-	        var list = document.querySelectorAll('#TMK_menus li');
-	        for (var i = 0; i < list.length; i++) {
-	            var m = list.item(i);
-	            m.removeAttribute('class');
-	        }
-	        menu.setAttribute('class', 'current');
-	    };
-	
-	    var pan = function (e) {
-	        draw.action = 2;
-	        var menu = e.target;
-	        lightMenu(menu);
-	        draw.setCursor();
+	  var lightMenu = function (menu) {
+	    var list = document.querySelectorAll("#TMK_menus li");
+	    for (var i = 0; i < list.length; i++) {
+	      var m = list.item(i);
+	      m.removeAttribute("class");
 	    }
+	    menu.setAttribute("class", "current");
+	  };
 	
-	    var measure = function (e) {
-	        draw.action = 1;
-	        var menu = e.target;
-	        lightMenu(menu);
-	        draw.setCursor();
-	    }
+	  var pan = function (e) {
+	    draw.action = 2;
+	    var menu = e.target;
+	    lightMenu(menu);
+	    draw.setCursor();
+	  };
 	
-	    menuZI.click(zoomIn);
-	    menuZO.click(zoomOut);
-	    menuPan.click(pan);
-	    menuMeasure.click(measure);
-	    menuClose.click(close);
+	  var measure = function (e) {
+	    draw.action = 1;
+	    var menu = e.target;
+	    lightMenu(menu);
+	    draw.setCursor();
+	  };
 	
-	    //绑定快捷键
-	    Mousetrap.bind('alt+=', function () { menuZI.click() });
-	    Mousetrap.bind('alt+-', function () { menuZO.click() });
-	    Mousetrap.bind('h', function () { menuPan.click(); });
-	    Mousetrap.bind('d', function () { menuMeasure.click(); });
-	    Mousetrap.bind(['backspace', 'del'], function () { draw.deletePath(); });
+	  menuZI.click(zoomIn);
+	  menuZO.click(zoomOut);
+	  menuPan.click(pan);
+	  menuMeasure.click(measure);
+	  menuClose.click(close);
 	
-	    Mousetrap.bind('left', function (e) {
-	        e.preventDefault();
-	        draw.moveLeft();
-	    });
-	    Mousetrap.bind('right', function (e) {
-	        e.preventDefault();
-	        draw.moveRight();
-	    });
-	    Mousetrap.bind('up', function (e) {
-	        e.preventDefault();
-	        draw.moveUp();
-	    });
-	    Mousetrap.bind('down', function (e) {
-	        e.preventDefault();
-	        draw.moveDown();
-	    });
+	  //绑定快捷键
+	  Mousetrap.bind("alt+=", function () {
+	    menuZI.click();
+	  });
+	  Mousetrap.bind("alt+-", function () {
+	    menuZO.click();
+	  });
+	  Mousetrap.bind("h", function () {
+	    menuPan.click();
+	  });
+	  Mousetrap.bind("d", function () {
+	    menuMeasure.click();
+	  });
+	  Mousetrap.bind(["backspace", "del"], function () {
+	    draw.deletePath();
+	  });
+	
+	  Mousetrap.bind("left", function (e) {
+	    e.preventDefault();
+	    draw.moveLeft();
+	  });
+	  Mousetrap.bind("right", function (e) {
+	    e.preventDefault();
+	    draw.moveRight();
+	  });
+	  Mousetrap.bind("up", function (e) {
+	    e.preventDefault();
+	    draw.moveUp();
+	  });
+	  Mousetrap.bind("down", function (e) {
+	    e.preventDefault();
+	    draw.moveDown();
+	  });
 	};
 	
-	
 	/*
-	*@description 滚轮事件
-	*/
+	 *@description 滚轮事件
+	 */
 	var freezeZoom = 0;
 	var mouseWheelZoom = function (e) {
-	    e.preventDefault();
-	    //+ 缩小  -放大
-	    var delta = e.wheelDelta;
-	    if(delta>0){
-	        zoomOut();
-	    }
-	    if(delta < 0 ){
-	        zoomIn();
-	    }
-	    /*switch (e.deltaY) {
+	  e.preventDefault();
+	  //+ 缩小  -放大
+	  var delta = e.wheelDelta;
+	  if (delta > 0) {
+	    zoomOut();
+	  }
+	  if (delta < 0) {
+	    zoomIn();
+	  }
+	  /*switch (e.deltaY) {
 	        case 100:
 	            zoomOut();
 	            break;
@@ -170,74 +178,77 @@
 	        default:
 	            break;
 	    }*/
-	}
+	};
 	
 	var zoomOut = function () {
-	    if (freezeZoom)
-	        return;
-	    freezeZoom = 1;
-	    draw.zoomOutAni().then(function () {
-	        progress.val(draw.getLevel());
-	    }).finally(function () {
-	        freezeZoom = 0;
+	  if (freezeZoom) return;
+	  freezeZoom = 1;
+	  draw
+	    .zoomOutAni()
+	    .then(function () {
+	      progress.val(draw.getLevel());
+	    })
+	    .finally(function () {
+	      freezeZoom = 0;
 	    });
-	}
+	};
 	
 	var zoomIn = function () {
-	    if (freezeZoom)
-	        return;
-	    freezeZoom = 1;
-	    draw.zoomInAni().then(function () {
-	        progress.val(draw.getLevel());
-	    }).finally(function () {
-	        freezeZoom = 0;
+	  if (freezeZoom) return;
+	  freezeZoom = 1;
+	  draw
+	    .zoomInAni()
+	    .then(function () {
+	      progress.val(draw.getLevel());
+	    })
+	    .finally(function () {
+	      freezeZoom = 0;
 	    });
-	}
+	};
 	
 	var getScreenShot = function () {
-	    chrome.runtime.sendMessage({ n: "sall" }, function (response) {
-	        var screenshot = response.screenshot;
-	        var dpr = response.dpr;
-	        draw.setDpr(dpr);
-	        initDraw();
-	        draw.setScreenShotUrl(screenshot);
-	        draw.start();
-	        window.addEventListener('mousewheel', mouseWheelZoom);
-	    });
-	}
+	  chrome.runtime.sendMessage(
+	    { n: "sall", dpr: window.devicePixelRatio },
+	    function (response) {
+	      var screenshot = response.screenshot;
+	      var dpr = response.dpr;
+	      draw.setDpr(dpr);
+	      initDraw();
+	      draw.setScreenShotUrl(screenshot);
+	      draw.start();
+	      window.addEventListener("mousewheel", mouseWheelZoom);
+	    }
+	  );
+	};
 	
 	getScreenShot();
 	
 	//检查是否contentscript已经注入
 	chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-	    if (request.detectContentScript) {
-	        //已注入开启功能
-	        if (!$('#ruler-panel').length)
-	            getScreenShot();
-	        // console.log('start:',Date.now());
-	        sendResponse({ isInjected: 1 });
-	    }
-	    return true;
+	  if (request.detectContentScript) {
+	    //已注入开启功能
+	    if (!$("#ruler-panel").length) getScreenShot();
+	    // console.log('start:',Date.now());
+	    sendResponse({ isInjected: 1 });
+	  }
+	  return true;
 	});
-	
-	
 	
 	//关闭ruler
 	var close = function () {
-	    //移除dom
-	    $container.remove();
-	    $('#ruler-panel').remove();
-	    draw.stop();
-	    //解除事件
-	    Mousetrap.reset();
-	    window.removeEventListener('mousewheel', mouseWheelZoom);
-	}
-	
+	  //移除dom
+	  $container.remove();
+	  $("#ruler-panel").remove();
+	  draw.stop();
+	  //解除事件
+	  Mousetrap.reset();
+	  window.removeEventListener("mousewheel", mouseWheelZoom);
+	};
 
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// shim for using process in browser
 	var process = module.exports = {};
@@ -425,91 +436,9 @@
 	process.umask = function() { return 0; };
 
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(1).nextTick;
-	var apply = Function.prototype.apply;
-	var slice = Array.prototype.slice;
-	var immediateIds = {};
-	var nextImmediateId = 0;
-	
-	// DOM APIs, for completeness
-	
-	exports.setTimeout = function() {
-	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
-	};
-	exports.setInterval = function() {
-	  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
-	};
-	exports.clearTimeout =
-	exports.clearInterval = function(timeout) { timeout.close(); };
-	
-	function Timeout(id, clearFn) {
-	  this._id = id;
-	  this._clearFn = clearFn;
-	}
-	Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-	Timeout.prototype.close = function() {
-	  this._clearFn.call(window, this._id);
-	};
-	
-	// Does not start the time, just sets up the members needed.
-	exports.enroll = function(item, msecs) {
-	  clearTimeout(item._idleTimeoutId);
-	  item._idleTimeout = msecs;
-	};
-	
-	exports.unenroll = function(item) {
-	  clearTimeout(item._idleTimeoutId);
-	  item._idleTimeout = -1;
-	};
-	
-	exports._unrefActive = exports.active = function(item) {
-	  clearTimeout(item._idleTimeoutId);
-	
-	  var msecs = item._idleTimeout;
-	  if (msecs >= 0) {
-	    item._idleTimeoutId = setTimeout(function onTimeout() {
-	      if (item._onTimeout)
-	        item._onTimeout();
-	    }, msecs);
-	  }
-	};
-	
-	// That's not how node.js implements it but the exposed api is the same.
-	exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
-	  var id = nextImmediateId++;
-	  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
-	
-	  immediateIds[id] = true;
-	
-	  nextTick(function onNextTick() {
-	    if (immediateIds[id]) {
-	      // fn.call() is faster so we optimize for the common use-case
-	      // @see http://jsperf.com/call-apply-segu
-	      if (args) {
-	        fn.apply(null, args);
-	      } else {
-	        fn.call(null);
-	      }
-	      // Prevent ids from leaking
-	      exports.clearImmediate(id);
-	    }
-	  });
-	
-	  return id;
-	};
-	
-	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
-	  delete immediateIds[id];
-	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).setImmediate, __webpack_require__(2).clearImmediate))
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	
 	/*
@@ -517,7 +446,7 @@
 	*/
 	
 	var TWEEN = __webpack_require__(13);
-	var Q     = __webpack_require__(19);
+	var Q     = __webpack_require__(27);
 	
 	var zoom = {
 	    /*等级从1到10，1是1：1的*/
@@ -672,12 +601,12 @@
 	
 
 
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	
-	var Layer = __webpack_require__(36);
+	var Layer = __webpack_require__(37);
 	
 	var map = {
 	    tempLayer: new Layer(),
@@ -699,22 +628,22 @@
 	
 
 
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	 * jQuery JavaScript Library v3.5.1
+	 * jQuery JavaScript Library v3.6.4
 	 * https://jquery.com/
 	 *
 	 * Includes Sizzle.js
 	 * https://sizzlejs.com/
 	 *
-	 * Copyright JS Foundation and other contributors
+	 * Copyright OpenJS Foundation and other contributors
 	 * Released under the MIT license
 	 * https://jquery.org/license
 	 *
-	 * Date: 2020-05-04T22:49Z
+	 * Date: 2023-03-08T15:28Z
 	 */
 	( function( global, factory ) {
 	
@@ -728,7 +657,7 @@
 			// (such as Node.js), expose a factory as module.exports.
 			// This accentuates the need for the creation of a real `window`.
 			// e.g. var jQuery = require("jquery")(window);
-			// See ticket #14549 for more info.
+			// See ticket trac-14549 for more info.
 			module.exports = global.document ?
 				factory( global, true ) :
 				function( w ) {
@@ -781,12 +710,16 @@
 	
 	var isFunction = function isFunction( obj ) {
 	
-	      // Support: Chrome <=57, Firefox <=52
-	      // In some browsers, typeof returns "function" for HTML <object> elements
-	      // (i.e., `typeof document.createElement( "object" ) === "function"`).
-	      // We don't want to classify *any* DOM node as a function.
-	      return typeof obj === "function" && typeof obj.nodeType !== "number";
-	  };
+			// Support: Chrome <=57, Firefox <=52
+			// In some browsers, typeof returns "function" for HTML <object> elements
+			// (i.e., `typeof document.createElement( "object" ) === "function"`).
+			// We don't want to classify *any* DOM node as a function.
+			// Support: QtWeb <=3.8.5, WebKit <=534.34, wkhtmltopdf tool <=0.12.5
+			// Plus for old WebKit, typeof returns "function" for HTML collections
+			// (e.g., `typeof document.getElementsByTagName("div") === "function"`). (gh-4756)
+			return typeof obj === "function" && typeof obj.nodeType !== "number" &&
+				typeof obj.item !== "function";
+		};
 	
 	
 	var isWindow = function isWindow( obj ) {
@@ -852,7 +785,7 @@
 	
 	
 	var
-		version = "3.5.1",
+		version = "3.6.4",
 	
 		// Define a local copy of jQuery
 		jQuery = function( selector, context ) {
@@ -1106,7 +1039,7 @@
 				if ( isArrayLike( Object( arr ) ) ) {
 					jQuery.merge( ret,
 						typeof arr === "string" ?
-						[ arr ] : arr
+							[ arr ] : arr
 					);
 				} else {
 					push.call( ret, arr );
@@ -1201,9 +1134,9 @@
 	
 	// Populate the class2type map
 	jQuery.each( "Boolean Number String Function Array Date RegExp Object Error Symbol".split( " " ),
-	function( _i, name ) {
-		class2type[ "[object " + name + "]" ] = name.toLowerCase();
-	} );
+		function( _i, name ) {
+			class2type[ "[object " + name + "]" ] = name.toLowerCase();
+		} );
 	
 	function isArrayLike( obj ) {
 	
@@ -1223,14 +1156,14 @@
 	}
 	var Sizzle =
 	/*!
-	 * Sizzle CSS Selector Engine v2.3.5
+	 * Sizzle CSS Selector Engine v2.3.10
 	 * https://sizzlejs.com/
 	 *
 	 * Copyright JS Foundation and other contributors
 	 * Released under the MIT license
 	 * https://js.foundation/
 	 *
-	 * Date: 2020-03-14
+	 * Date: 2023-02-14
 	 */
 	( function( window ) {
 	var i,
@@ -1334,7 +1267,7 @@
 			whitespace + "+$", "g" ),
 	
 		rcomma = new RegExp( "^" + whitespace + "*," + whitespace + "*" ),
-		rcombinators = new RegExp( "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace +
+		rleadingCombinator = new RegExp( "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace +
 			"*" ),
 		rdescend = new RegExp( whitespace + "|>" ),
 	
@@ -1551,7 +1484,7 @@
 					// as such selectors are not recognized by querySelectorAll.
 					// Thanks to Andrew Dupont for this technique.
 					if ( nodeType === 1 &&
-						( rdescend.test( selector ) || rcombinators.test( selector ) ) ) {
+						( rdescend.test( selector ) || rleadingCombinator.test( selector ) ) ) {
 	
 						// Expand context for sibling selectors
 						newContext = rsibling.test( selector ) && testContext( context.parentNode ) ||
@@ -1813,8 +1746,8 @@
 	 * @returns {Boolean} True iff elem is a non-HTML XML node
 	 */
 	isXML = Sizzle.isXML = function( elem ) {
-		var namespace = elem.namespaceURI,
-			docElem = ( elem.ownerDocument || elem ).documentElement;
+		var namespace = elem && elem.namespaceURI,
+			docElem = elem && ( elem.ownerDocument || elem ).documentElement;
 	
 		// Support: IE <=8
 		// Assume HTML when documentElement doesn't yet exist, such as inside loading iframes
@@ -1873,6 +1806,24 @@
 			docElem.appendChild( el ).appendChild( document.createElement( "div" ) );
 			return typeof el.querySelectorAll !== "undefined" &&
 				!el.querySelectorAll( ":scope fieldset div" ).length;
+		} );
+	
+		// Support: Chrome 105 - 110+, Safari 15.4 - 16.3+
+		// Make sure the the `:has()` argument is parsed unforgivingly.
+		// We include `*` in the test to detect buggy implementations that are
+		// _selectively_ forgiving (specifically when the list includes at least
+		// one valid selector).
+		// Note that we treat complete lack of support for `:has()` as if it were
+		// spec-compliant support, which is fine because use of `:has()` in such
+		// environments will fail in the qSA path and fall back to jQuery traversal
+		// anyway.
+		support.cssHas = assert( function() {
+			try {
+				document.querySelector( ":has(*,:jqfake)" );
+				return false;
+			} catch ( e ) {
+				return true;
+			}
 		} );
 	
 		/* Attributes
@@ -2141,6 +2092,17 @@
 			} );
 		}
 	
+		if ( !support.cssHas ) {
+	
+			// Support: Chrome 105 - 110+, Safari 15.4 - 16.3+
+			// Our regular `try-catch` mechanism fails to detect natively-unsupported
+			// pseudo-classes inside `:has()` (such as `:has(:contains("Foo"))`)
+			// in browsers that parse the `:has()` argument as a forgiving selector list.
+			// https://drafts.csswg.org/selectors/#relational now requires the argument
+			// to be parsed unforgivingly, but browsers have not yet fully adjusted.
+			rbuggyQSA.push( ":has" );
+		}
+	
 		rbuggyQSA = rbuggyQSA.length && new RegExp( rbuggyQSA.join( "|" ) );
 		rbuggyMatches = rbuggyMatches.length && new RegExp( rbuggyMatches.join( "|" ) );
 	
@@ -2153,7 +2115,14 @@
 		// As in, an element does not contain itself
 		contains = hasCompare || rnative.test( docElem.contains ) ?
 			function( a, b ) {
-				var adown = a.nodeType === 9 ? a.documentElement : a,
+	
+				// Support: IE <9 only
+				// IE doesn't have `contains` on `document` so we need to check for
+				// `documentElement` presence.
+				// We need to fall back to `a` when `documentElement` is missing
+				// as `ownerDocument` of elements within `<template/>` may have
+				// a null one - a default behavior of all modern browsers.
+				var adown = a.nodeType === 9 && a.documentElement || a,
 					bup = b && b.parentNode;
 				return a === bup || !!( bup && bup.nodeType === 1 && (
 					adown.contains ?
@@ -2943,7 +2912,7 @@
 				return elem.nodeName.toLowerCase() === "input" &&
 					elem.type === "text" &&
 	
-					// Support: IE<8
+					// Support: IE <10 only
 					// New HTML5 attribute values (e.g., "search") appear with elem.type === "text"
 					( ( attr = elem.getAttribute( "type" ) ) == null ||
 						attr.toLowerCase() === "text" );
@@ -3043,7 +3012,7 @@
 			matched = false;
 	
 			// Combinators
-			if ( ( match = rcombinators.exec( soFar ) ) ) {
+			if ( ( match = rleadingCombinator.exec( soFar ) ) ) {
 				matched = match.shift();
 				tokens.push( {
 					value: matched,
@@ -3729,9 +3698,9 @@
 	
 	function nodeName( elem, name ) {
 	
-	  return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
+		return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
 	
-	};
+	}
 	var rsingleTag = ( /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i );
 	
 	
@@ -3830,8 +3799,8 @@
 	var rootjQuery,
 	
 		// A simple way to check for HTML strings
-		// Prioritize #id over <tag> to avoid XSS via location.hash (#9521)
-		// Strict HTML recognition (#11290: must start with <)
+		// Prioritize #id over <tag> to avoid XSS via location.hash (trac-9521)
+		// Strict HTML recognition (trac-11290: must start with <)
 		// Shortcut simple #id case for speed
 		rquickExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]+))$/,
 	
@@ -4702,8 +4671,8 @@
 				resolveContexts = Array( i ),
 				resolveValues = slice.call( arguments ),
 	
-				// the master Deferred
-				master = jQuery.Deferred(),
+				// the primary Deferred
+				primary = jQuery.Deferred(),
 	
 				// subordinate callback factory
 				updateFunc = function( i ) {
@@ -4711,30 +4680,30 @@
 						resolveContexts[ i ] = this;
 						resolveValues[ i ] = arguments.length > 1 ? slice.call( arguments ) : value;
 						if ( !( --remaining ) ) {
-							master.resolveWith( resolveContexts, resolveValues );
+							primary.resolveWith( resolveContexts, resolveValues );
 						}
 					};
 				};
 	
 			// Single- and empty arguments are adopted like Promise.resolve
 			if ( remaining <= 1 ) {
-				adoptValue( singleValue, master.done( updateFunc( i ) ).resolve, master.reject,
+				adoptValue( singleValue, primary.done( updateFunc( i ) ).resolve, primary.reject,
 					!remaining );
 	
 				// Use .then() to unwrap secondary thenables (cf. gh-3000)
-				if ( master.state() === "pending" ||
+				if ( primary.state() === "pending" ||
 					isFunction( resolveValues[ i ] && resolveValues[ i ].then ) ) {
 	
-					return master.then();
+					return primary.then();
 				}
 			}
 	
 			// Multiple arguments are aggregated like Promise.all array elements
 			while ( i-- ) {
-				adoptValue( resolveValues[ i ], updateFunc( i ), master.reject );
+				adoptValue( resolveValues[ i ], updateFunc( i ), primary.reject );
 			}
 	
-			return master.promise();
+			return primary.promise();
 		}
 	} );
 	
@@ -4788,7 +4757,7 @@
 		isReady: false,
 	
 		// A counter to track how many items to wait for before
-		// the ready event fires. See #6781
+		// the ready event fires. See trac-6781
 		readyWait: 1,
 	
 		// Handle when the DOM is ready
@@ -4885,8 +4854,8 @@
 				for ( ; i < len; i++ ) {
 					fn(
 						elems[ i ], key, raw ?
-						value :
-						value.call( elems[ i ], i, fn( elems[ i ], key ) )
+							value :
+							value.call( elems[ i ], i, fn( elems[ i ], key ) )
 					);
 				}
 			}
@@ -4916,7 +4885,7 @@
 	
 	// Convert dashed to camelCase; used by the css and data modules
 	// Support: IE <=9 - 11, Edge 12 - 15
-	// Microsoft forgot to hump their vendor prefix (#9572)
+	// Microsoft forgot to hump their vendor prefix (trac-9572)
 	function camelCase( string ) {
 		return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
 	}
@@ -4952,7 +4921,7 @@
 				value = {};
 	
 				// We can accept data for non-element nodes in modern browsers,
-				// but we should not, see #8335.
+				// but we should not, see trac-8335.
 				// Always return an empty object.
 				if ( acceptData( owner ) ) {
 	
@@ -5191,7 +5160,7 @@
 						while ( i-- ) {
 	
 							// Support: IE 11 only
-							// The attrs elements can be null (#14894)
+							// The attrs elements can be null (trac-14894)
 							if ( attrs[ i ] ) {
 								name = attrs[ i ].name;
 								if ( name.indexOf( "data-" ) === 0 ) {
@@ -5614,9 +5583,9 @@
 			input = document.createElement( "input" );
 	
 		// Support: Android 4.0 - 4.3 only
-		// Check state lost if the name is set (#11217)
+		// Check state lost if the name is set (trac-11217)
 		// Support: Windows Web Apps (WWA)
-		// `name` and `type` must use .setAttribute for WWA (#14901)
+		// `name` and `type` must use .setAttribute for WWA (trac-14901)
 		input.setAttribute( "type", "radio" );
 		input.setAttribute( "checked", "checked" );
 		input.setAttribute( "name", "t" );
@@ -5640,7 +5609,7 @@
 	} )();
 	
 	
-	// We have to close these tags to support XHTML (#13200)
+	// We have to close these tags to support XHTML (trac-13200)
 	var wrapMap = {
 	
 		// XHTML parsers do not magically insert elements in the
@@ -5666,7 +5635,7 @@
 	function getAll( context, tag ) {
 	
 		// Support: IE <=9 - 11 only
-		// Use typeof to avoid zero-argument method invocation on host objects (#15151)
+		// Use typeof to avoid zero-argument method invocation on host objects (trac-15151)
 		var ret;
 	
 		if ( typeof context.getElementsByTagName !== "undefined" ) {
@@ -5749,7 +5718,7 @@
 					// Remember the top-level container
 					tmp = fragment.firstChild;
 	
-					// Ensure the created nodes are orphaned (#12392)
+					// Ensure the created nodes are orphaned (trac-12392)
 					tmp.textContent = "";
 				}
 			}
@@ -5794,10 +5763,7 @@
 	}
 	
 	
-	var
-		rkeyEvent = /^key/,
-		rmouseEvent = /^(?:mouse|pointer|contextmenu|drag|drop)|click/,
-		rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
+	var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
 	
 	function returnTrue() {
 		return true;
@@ -6092,8 +6058,8 @@
 				event = jQuery.event.fix( nativeEvent ),
 	
 				handlers = (
-						dataPriv.get( this, "events" ) || Object.create( null )
-					)[ event.type ] || [],
+					dataPriv.get( this, "events" ) || Object.create( null )
+				)[ event.type ] || [],
 				special = jQuery.event.special[ event.type ] || {};
 	
 			// Use the fix-ed jQuery.Event rather than the (read-only) native event
@@ -6173,15 +6139,15 @@
 	
 				for ( ; cur !== this; cur = cur.parentNode || this ) {
 	
-					// Don't check non-elements (#13208)
-					// Don't process clicks on disabled elements (#6911, #8165, #11382, #11764)
+					// Don't check non-elements (trac-13208)
+					// Don't process clicks on disabled elements (trac-6911, trac-8165, trac-11382, trac-11764)
 					if ( cur.nodeType === 1 && !( event.type === "click" && cur.disabled === true ) ) {
 						matchedHandlers = [];
 						matchedSelectors = {};
 						for ( i = 0; i < delegateCount; i++ ) {
 							handleObj = handlers[ i ];
 	
-							// Don't conflict with Object.prototype properties (#13203)
+							// Don't conflict with Object.prototype properties (trac-13203)
 							sel = handleObj.selector + " ";
 	
 							if ( matchedSelectors[ sel ] === undefined ) {
@@ -6217,12 +6183,12 @@
 				get: isFunction( hook ) ?
 					function() {
 						if ( this.originalEvent ) {
-								return hook( this.originalEvent );
+							return hook( this.originalEvent );
 						}
 					} :
 					function() {
 						if ( this.originalEvent ) {
-								return this.originalEvent[ name ];
+							return this.originalEvent[ name ];
 						}
 					},
 	
@@ -6361,7 +6327,13 @@
 							// Cancel the outer synthetic event
 							event.stopImmediatePropagation();
 							event.preventDefault();
-							return result.value;
+	
+							// Support: Chrome 86+
+							// In Chrome, if an element having a focusout handler is blurred by
+							// clicking outside of it, it invokes the handler synchronously. If
+							// that handler calls `.remove()` on the element, the data is cleared,
+							// leaving `result` undefined. We need to guard against this.
+							return result && result.value;
 						}
 	
 					// If this is an inner synthetic event for an event with a bubbling surrogate
@@ -6429,7 +6401,7 @@
 	
 			// Create target properties
 			// Support: Safari <=6 - 7 only
-			// Target should not be a text node (#504, #13143)
+			// Target should not be a text node (trac-504, trac-13143)
 			this.target = ( src.target && src.target.nodeType === 3 ) ?
 				src.target.parentNode :
 				src.target;
@@ -6526,34 +6498,7 @@
 		targetTouches: true,
 		toElement: true,
 		touches: true,
-	
-		which: function( event ) {
-			var button = event.button;
-	
-			// Add which for key events
-			if ( event.which == null && rkeyEvent.test( event.type ) ) {
-				return event.charCode != null ? event.charCode : event.keyCode;
-			}
-	
-			// Add which for click: 1 === left; 2 === middle; 3 === right
-			if ( !event.which && button !== undefined && rmouseEvent.test( event.type ) ) {
-				if ( button & 1 ) {
-					return 1;
-				}
-	
-				if ( button & 2 ) {
-					return 3;
-				}
-	
-				if ( button & 4 ) {
-					return 2;
-				}
-	
-				return 0;
-			}
-	
-			return event.which;
-		}
+		which: true
 	}, jQuery.event.addProp );
 	
 	jQuery.each( { focus: "focusin", blur: "focusout" }, function( type, delegateType ) {
@@ -6577,6 +6522,12 @@
 	
 				// Return non-false to allow normal event-path propagation
 				return true;
+			},
+	
+			// Suppress native focus or blur if we're currently inside
+			// a leveraged native-event stack
+			_default: function( event ) {
+				return dataPriv.get( event.target, type );
 			},
 	
 			delegateType: delegateType
@@ -6675,7 +6626,8 @@
 	
 		// checked="checked" or checked
 		rchecked = /checked\s*(?:[^=]|=\s*.checked.)/i,
-		rcleanScript = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g;
+	
+		rcleanScript = /^\s*<!\[CDATA\[|\]\]>\s*$/g;
 	
 	// Prefer a tbody over its parent table for containing new rows
 	function manipulationTarget( elem, content ) {
@@ -6789,7 +6741,7 @@
 	
 				// Use the original fragment for the last item
 				// instead of the first because it can end up
-				// being emptied incorrectly in certain situations (#8070).
+				// being emptied incorrectly in certain situations (trac-8070).
 				for ( ; i < l; i++ ) {
 					node = fragment;
 	
@@ -6830,6 +6782,12 @@
 									}, doc );
 								}
 							} else {
+	
+								// Unwrap a CDATA section containing script contents. This shouldn't be
+								// needed as in XML documents they're already not visible when
+								// inspecting element contents and in HTML documents they have no
+								// meaning but we're preserving that logic for backwards compatibility.
+								// This will be removed completely in 4.0. See gh-4904.
 								DOMEval( node.textContent.replace( rcleanScript, "" ), node, doc );
 							}
 						}
@@ -7112,9 +7070,12 @@
 	} );
 	var rnumnonpx = new RegExp( "^(" + pnum + ")(?!px)[a-z%]+$", "i" );
 	
+	var rcustomProp = /^--/;
+	
+	
 	var getStyles = function( elem ) {
 	
-			// Support: IE <=11 only, Firefox <=30 (#15098, #14150)
+			// Support: IE <=11 only, Firefox <=30 (trac-15098, trac-14150)
 			// IE throws on elements created in popups
 			// FF meanwhile throws on frame elements through "defaultView.getComputedStyle"
 			var view = elem.ownerDocument.defaultView;
@@ -7148,6 +7109,15 @@
 	
 	
 	var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
+	
+	var whitespace = "[\\x20\\t\\r\\n\\f]";
+	
+	
+	var rtrimCSS = new RegExp(
+		"^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$",
+		"g"
+	);
+	
 	
 	
 	
@@ -7214,7 +7184,7 @@
 		}
 	
 		// Support: IE <=9 - 11 only
-		// Style of cloned element affects source element cloned (#8908)
+		// Style of cloned element affects source element cloned (trac-8908)
 		div.style.backgroundClip = "content-box";
 		div.cloneNode( true ).style.backgroundClip = "";
 		support.clearCloneStyle = div.style.backgroundClip === "content-box";
@@ -7246,6 +7216,10 @@
 			// set in CSS while `offset*` properties report correct values.
 			// Behavior in IE 9 is more subtle than in newer versions & it passes
 			// some versions of this test; make sure not to make it pass there!
+			//
+			// Support: Firefox 70+
+			// Only Firefox includes border widths
+			// in computed dimensions. (gh-4529)
 			reliableTrDimensions: function() {
 				var table, tr, trChild, trStyle;
 				if ( reliableTrDimensionsVal == null ) {
@@ -7253,9 +7227,22 @@
 					tr = document.createElement( "tr" );
 					trChild = document.createElement( "div" );
 	
-					table.style.cssText = "position:absolute;left:-11111px";
+					table.style.cssText = "position:absolute;left:-11111px;border-collapse:separate";
+					tr.style.cssText = "border:1px solid";
+	
+					// Support: Chrome 86+
+					// Height set through cssText does not get applied.
+					// Computed height then comes back as 0.
 					tr.style.height = "1px";
 					trChild.style.height = "9px";
+	
+					// Support: Android 8 Chrome 86+
+					// In our bodyBackground.html iframe,
+					// display for all div elements is set to "inline",
+					// which causes a problem only in Android 8 Chrome 86.
+					// Ensuring the div is display: block
+					// gets around this issue.
+					trChild.style.display = "block";
 	
 					documentElement
 						.appendChild( table )
@@ -7263,7 +7250,9 @@
 						.appendChild( trChild );
 	
 					trStyle = window.getComputedStyle( tr );
-					reliableTrDimensionsVal = parseInt( trStyle.height ) > 3;
+					reliableTrDimensionsVal = ( parseInt( trStyle.height, 10 ) +
+						parseInt( trStyle.borderTopWidth, 10 ) +
+						parseInt( trStyle.borderBottomWidth, 10 ) ) === tr.offsetHeight;
 	
 					documentElement.removeChild( table );
 				}
@@ -7275,6 +7264,7 @@
 	
 	function curCSS( elem, name, computed ) {
 		var width, minWidth, maxWidth, ret,
+			isCustomProp = rcustomProp.test( name ),
 	
 			// Support: Firefox 51+
 			// Retrieving style before computed somehow
@@ -7285,10 +7275,41 @@
 		computed = computed || getStyles( elem );
 	
 		// getPropertyValue is needed for:
-		//   .css('filter') (IE 9 only, #12537)
-		//   .css('--customProperty) (#3144)
+		//   .css('filter') (IE 9 only, trac-12537)
+		//   .css('--customProperty) (gh-3144)
 		if ( computed ) {
+	
+			// Support: IE <=9 - 11+
+			// IE only supports `"float"` in `getPropertyValue`; in computed styles
+			// it's only available as `"cssFloat"`. We no longer modify properties
+			// sent to `.css()` apart from camelCasing, so we need to check both.
+			// Normally, this would create difference in behavior: if
+			// `getPropertyValue` returns an empty string, the value returned
+			// by `.css()` would be `undefined`. This is usually the case for
+			// disconnected elements. However, in IE even disconnected elements
+			// with no styles return `"none"` for `getPropertyValue( "float" )`
 			ret = computed.getPropertyValue( name ) || computed[ name ];
+	
+			if ( isCustomProp && ret ) {
+	
+				// Support: Firefox 105+, Chrome <=105+
+				// Spec requires trimming whitespace for custom properties (gh-4926).
+				// Firefox only trims leading whitespace. Chrome just collapses
+				// both leading & trailing whitespace to a single space.
+				//
+				// Fall back to `undefined` if empty string returned.
+				// This collapses a missing definition with property defined
+				// and set to an empty string but there's no standard API
+				// allowing us to differentiate them without a performance penalty
+				// and returning `undefined` aligns with older jQuery.
+				//
+				// rtrimCSS treats U+000D CARRIAGE RETURN and U+000C FORM FEED
+				// as whitespace while CSS does not, but this is not a problem
+				// because CSS preprocessing replaces them with U+000A LINE FEED
+				// (which *is* CSS whitespace)
+				// https://www.w3.org/TR/css-syntax-3/#input-preprocessing
+				ret = ret.replace( rtrimCSS, "$1" ) || undefined;
+			}
 	
 			if ( ret === "" && !isAttached( elem ) ) {
 				ret = jQuery.style( elem, name );
@@ -7385,7 +7406,6 @@
 		// except "table", "table-cell", or "table-caption"
 		// See here for display values: https://developer.mozilla.org/en-US/docs/CSS/display
 		rdisplayswap = /^(none|table(?!-c[ea]).+)/,
-		rcustomProp = /^--/,
 		cssShow = { position: "absolute", visibility: "hidden", display: "block" },
 		cssNormalTransform = {
 			letterSpacing: "0",
@@ -7621,15 +7641,15 @@
 			if ( value !== undefined ) {
 				type = typeof value;
 	
-				// Convert "+=" or "-=" to relative numbers (#7345)
+				// Convert "+=" or "-=" to relative numbers (trac-7345)
 				if ( type === "string" && ( ret = rcssNum.exec( value ) ) && ret[ 1 ] ) {
 					value = adjustCSS( elem, name, ret );
 	
-					// Fixes bug #9237
+					// Fixes bug trac-9237
 					type = "number";
 				}
 	
-				// Make sure that null and NaN values aren't set (#7116)
+				// Make sure that null and NaN values aren't set (trac-7116)
 				if ( value == null || value !== value ) {
 					return;
 				}
@@ -7727,10 +7747,10 @@
 						// Running getBoundingClientRect on a disconnected node
 						// in IE throws an error.
 						( !elem.getClientRects().length || !elem.getBoundingClientRect().width ) ?
-							swap( elem, cssShow, function() {
-								return getWidthOrHeight( elem, dimension, extra );
-							} ) :
-							getWidthOrHeight( elem, dimension, extra );
+						swap( elem, cssShow, function() {
+							return getWidthOrHeight( elem, dimension, extra );
+						} ) :
+						getWidthOrHeight( elem, dimension, extra );
 				}
 			},
 	
@@ -7789,7 +7809,7 @@
 						swap( elem, { marginLeft: 0 }, function() {
 							return elem.getBoundingClientRect().left;
 						} )
-					) + "px";
+				) + "px";
 			}
 		}
 	);
@@ -7928,7 +7948,7 @@
 				if ( jQuery.fx.step[ tween.prop ] ) {
 					jQuery.fx.step[ tween.prop ]( tween );
 				} else if ( tween.elem.nodeType === 1 && (
-						jQuery.cssHooks[ tween.prop ] ||
+					jQuery.cssHooks[ tween.prop ] ||
 						tween.elem.style[ finalPropName( tween.prop ) ] != null ) ) {
 					jQuery.style( tween.elem, tween.prop, tween.now + tween.unit );
 				} else {
@@ -8173,7 +8193,7 @@
 	
 				anim.done( function() {
 	
-				/* eslint-enable no-loop-func */
+					/* eslint-enable no-loop-func */
 	
 					// The final step of a "hide" animation is actually hiding the element
 					if ( !hidden ) {
@@ -8253,7 +8273,7 @@
 					remaining = Math.max( 0, animation.startTime + animation.duration - currentTime ),
 	
 					// Support: Android 2.3 only
-					// Archaic crash bug won't allow us to use `1 - ( 0.5 || 0 )` (#12497)
+					// Archaic crash bug won't allow us to use `1 - ( 0.5 || 0 )` (trac-12497)
 					temp = remaining / animation.duration || 0,
 					percent = 1 - temp,
 					index = 0,
@@ -8293,7 +8313,7 @@
 				tweens: [],
 				createTween: function( prop, end ) {
 					var tween = jQuery.Tween( elem, animation.opts, prop, end,
-							animation.opts.specialEasing[ prop ] || animation.opts.easing );
+						animation.opts.specialEasing[ prop ] || animation.opts.easing );
 					animation.tweens.push( tween );
 					return tween;
 				},
@@ -8466,7 +8486,8 @@
 						anim.stop( true );
 					}
 				};
-				doAnimation.finish = doAnimation;
+	
+			doAnimation.finish = doAnimation;
 	
 			return empty || optall.queue === false ?
 				this.each( doAnimation ) :
@@ -8642,7 +8663,6 @@
 	
 	
 	// Based off of the plugin by Clint Helfers, with permission.
-	// https://web.archive.org/web/20100324014747/http://blindsignals.com/index.php/2009/07/jquery-delay/
 	jQuery.fn.delay = function( time, type ) {
 		time = jQuery.fx ? jQuery.fx.speeds[ time ] || time : time;
 		type = type || "fx";
@@ -8867,8 +8887,7 @@
 					// Support: IE <=9 - 11 only
 					// elem.tabIndex doesn't always return the
 					// correct value when it hasn't been explicitly set
-					// https://web.archive.org/web/20141116233347/http://fluidproject.org/blog/2008/01/09/getting-setting-and-removing-tabindex-values-with-javascript/
-					// Use proper attribute retrieval(#12072)
+					// Use proper attribute retrieval (trac-12072)
 					var tabindex = jQuery.find.attr( elem, "tabindex" );
 	
 					if ( tabindex ) {
@@ -8972,8 +8991,7 @@
 	
 	jQuery.fn.extend( {
 		addClass: function( value ) {
-			var classes, elem, cur, curValue, clazz, j, finalValue,
-				i = 0;
+			var classNames, cur, curValue, className, i, finalValue;
 	
 			if ( isFunction( value ) ) {
 				return this.each( function( j ) {
@@ -8981,36 +8999,35 @@
 				} );
 			}
 	
-			classes = classesToArray( value );
+			classNames = classesToArray( value );
 	
-			if ( classes.length ) {
-				while ( ( elem = this[ i++ ] ) ) {
-					curValue = getClass( elem );
-					cur = elem.nodeType === 1 && ( " " + stripAndCollapse( curValue ) + " " );
+			if ( classNames.length ) {
+				return this.each( function() {
+					curValue = getClass( this );
+					cur = this.nodeType === 1 && ( " " + stripAndCollapse( curValue ) + " " );
 	
 					if ( cur ) {
-						j = 0;
-						while ( ( clazz = classes[ j++ ] ) ) {
-							if ( cur.indexOf( " " + clazz + " " ) < 0 ) {
-								cur += clazz + " ";
+						for ( i = 0; i < classNames.length; i++ ) {
+							className = classNames[ i ];
+							if ( cur.indexOf( " " + className + " " ) < 0 ) {
+								cur += className + " ";
 							}
 						}
 	
 						// Only assign if different to avoid unneeded rendering.
 						finalValue = stripAndCollapse( cur );
 						if ( curValue !== finalValue ) {
-							elem.setAttribute( "class", finalValue );
+							this.setAttribute( "class", finalValue );
 						}
 					}
-				}
+				} );
 			}
 	
 			return this;
 		},
 	
 		removeClass: function( value ) {
-			var classes, elem, cur, curValue, clazz, j, finalValue,
-				i = 0;
+			var classNames, cur, curValue, className, i, finalValue;
 	
 			if ( isFunction( value ) ) {
 				return this.each( function( j ) {
@@ -9022,44 +9039,41 @@
 				return this.attr( "class", "" );
 			}
 	
-			classes = classesToArray( value );
+			classNames = classesToArray( value );
 	
-			if ( classes.length ) {
-				while ( ( elem = this[ i++ ] ) ) {
-					curValue = getClass( elem );
+			if ( classNames.length ) {
+				return this.each( function() {
+					curValue = getClass( this );
 	
 					// This expression is here for better compressibility (see addClass)
-					cur = elem.nodeType === 1 && ( " " + stripAndCollapse( curValue ) + " " );
+					cur = this.nodeType === 1 && ( " " + stripAndCollapse( curValue ) + " " );
 	
 					if ( cur ) {
-						j = 0;
-						while ( ( clazz = classes[ j++ ] ) ) {
+						for ( i = 0; i < classNames.length; i++ ) {
+							className = classNames[ i ];
 	
 							// Remove *all* instances
-							while ( cur.indexOf( " " + clazz + " " ) > -1 ) {
-								cur = cur.replace( " " + clazz + " ", " " );
+							while ( cur.indexOf( " " + className + " " ) > -1 ) {
+								cur = cur.replace( " " + className + " ", " " );
 							}
 						}
 	
 						// Only assign if different to avoid unneeded rendering.
 						finalValue = stripAndCollapse( cur );
 						if ( curValue !== finalValue ) {
-							elem.setAttribute( "class", finalValue );
+							this.setAttribute( "class", finalValue );
 						}
 					}
-				}
+				} );
 			}
 	
 			return this;
 		},
 	
 		toggleClass: function( value, stateVal ) {
-			var type = typeof value,
+			var classNames, className, i, self,
+				type = typeof value,
 				isValidValue = type === "string" || Array.isArray( value );
-	
-			if ( typeof stateVal === "boolean" && isValidValue ) {
-				return stateVal ? this.addClass( value ) : this.removeClass( value );
-			}
 	
 			if ( isFunction( value ) ) {
 				return this.each( function( i ) {
@@ -9070,17 +9084,20 @@
 				} );
 			}
 	
-			return this.each( function() {
-				var className, i, self, classNames;
+			if ( typeof stateVal === "boolean" && isValidValue ) {
+				return stateVal ? this.addClass( value ) : this.removeClass( value );
+			}
 	
+			classNames = classesToArray( value );
+	
+			return this.each( function() {
 				if ( isValidValue ) {
 	
 					// Toggle individual class names
-					i = 0;
 					self = jQuery( this );
-					classNames = classesToArray( value );
 	
-					while ( ( className = classNames[ i++ ] ) ) {
+					for ( i = 0; i < classNames.length; i++ ) {
+						className = classNames[ i ];
 	
 						// Check each className given, space separated list
 						if ( self.hasClass( className ) ) {
@@ -9106,8 +9123,8 @@
 					if ( this.setAttribute ) {
 						this.setAttribute( "class",
 							className || value === false ?
-							"" :
-							dataPriv.get( this, "__className__" ) || ""
+								"" :
+								dataPriv.get( this, "__className__" ) || ""
 						);
 					}
 				}
@@ -9122,7 +9139,7 @@
 			while ( ( elem = this[ i++ ] ) ) {
 				if ( elem.nodeType === 1 &&
 					( " " + stripAndCollapse( getClass( elem ) ) + " " ).indexOf( className ) > -1 ) {
-						return true;
+					return true;
 				}
 			}
 	
@@ -9214,7 +9231,7 @@
 						val :
 	
 						// Support: IE <=10 - 11 only
-						// option.text throws exceptions (#14686, #14858)
+						// option.text throws exceptions (trac-14686, trac-14858)
 						// Strip and collapse whitespace
 						// https://html.spec.whatwg.org/#strip-and-collapse-whitespace
 						stripAndCollapse( jQuery.text( elem ) );
@@ -9241,7 +9258,7 @@
 						option = options[ i ];
 	
 						// Support: IE <=9 only
-						// IE8-9 doesn't update selected after form reset (#2551)
+						// IE8-9 doesn't update selected after form reset (trac-2551)
 						if ( ( option.selected || i === index ) &&
 	
 								// Don't return options that are disabled or in a disabled optgroup
@@ -9384,8 +9401,8 @@
 				return;
 			}
 	
-			// Determine event propagation path in advance, per W3C events spec (#9951)
-			// Bubble up to document, then to window; watch for a global ownerDocument var (#9724)
+			// Determine event propagation path in advance, per W3C events spec (trac-9951)
+			// Bubble up to document, then to window; watch for a global ownerDocument var (trac-9724)
 			if ( !onlyHandlers && !special.noBubble && !isWindow( elem ) ) {
 	
 				bubbleType = special.delegateType || type;
@@ -9412,9 +9429,7 @@
 					special.bindType || type;
 	
 				// jQuery handler
-				handle = (
-						dataPriv.get( cur, "events" ) || Object.create( null )
-					)[ event.type ] &&
+				handle = ( dataPriv.get( cur, "events" ) || Object.create( null ) )[ event.type ] &&
 					dataPriv.get( cur, "handle" );
 				if ( handle ) {
 					handle.apply( cur, data );
@@ -9439,7 +9454,7 @@
 					acceptData( elem ) ) {
 	
 					// Call a native DOM method on the target with the same name as the event.
-					// Don't do default actions on window, that's where global variables be (#6170)
+					// Don't do default actions on window, that's where global variables be (trac-6170)
 					if ( ontype && isFunction( elem[ type ] ) && !isWindow( elem ) ) {
 	
 						// Don't re-trigger an onFOO event when we call its FOO() method
@@ -9561,7 +9576,7 @@
 	
 	// Cross-browser xml parsing
 	jQuery.parseXML = function( data ) {
-		var xml;
+		var xml, parserErrorElem;
 		if ( !data || typeof data !== "string" ) {
 			return null;
 		}
@@ -9570,12 +9585,17 @@
 		// IE throws on parseFromString with invalid input.
 		try {
 			xml = ( new window.DOMParser() ).parseFromString( data, "text/xml" );
-		} catch ( e ) {
-			xml = undefined;
-		}
+		} catch ( e ) {}
 	
-		if ( !xml || xml.getElementsByTagName( "parsererror" ).length ) {
-			jQuery.error( "Invalid XML: " + data );
+		parserErrorElem = xml && xml.getElementsByTagName( "parsererror" )[ 0 ];
+		if ( !xml || parserErrorElem ) {
+			jQuery.error( "Invalid XML: " + (
+				parserErrorElem ?
+					jQuery.map( parserErrorElem.childNodes, function( el ) {
+						return el.textContent;
+					} ).join( "\n" ) :
+					data
+			) );
 		}
 		return xml;
 	};
@@ -9676,16 +9696,14 @@
 				// Can add propHook for "elements" to filter or add form elements
 				var elements = jQuery.prop( this, "elements" );
 				return elements ? jQuery.makeArray( elements ) : this;
-			} )
-			.filter( function() {
+			} ).filter( function() {
 				var type = this.type;
 	
 				// Use .is( ":disabled" ) so that fieldset[disabled] works
 				return this.name && !jQuery( this ).is( ":disabled" ) &&
 					rsubmittable.test( this.nodeName ) && !rsubmitterTypes.test( type ) &&
 					( this.checked || !rcheckableType.test( type ) );
-			} )
-			.map( function( _i, elem ) {
+			} ).map( function( _i, elem ) {
 				var val = jQuery( this ).val();
 	
 				if ( val == null ) {
@@ -9710,7 +9728,7 @@
 		rantiCache = /([?&])_=[^&]*/,
 		rheaders = /^(.*?):[ \t]*([^\r\n]*)$/mg,
 	
-		// #7653, #8125, #8152: local protocol detection
+		// trac-7653, trac-8125, trac-8152: local protocol detection
 		rlocalProtocol = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
 		rnoContent = /^(?:GET|HEAD)$/,
 		rprotocol = /^\/\//,
@@ -9733,12 +9751,13 @@
 		 */
 		transports = {},
 	
-		// Avoid comment-prolog char sequence (#10098); must appease lint and evade compression
+		// Avoid comment-prolog char sequence (trac-10098); must appease lint and evade compression
 		allTypes = "*/".concat( "*" ),
 	
 		// Anchor tag for parsing the document origin
 		originAnchor = document.createElement( "a" );
-		originAnchor.href = location.href;
+	
+	originAnchor.href = location.href;
 	
 	// Base "constructor" for jQuery.ajaxPrefilter and jQuery.ajaxTransport
 	function addToPrefiltersOrTransports( structure ) {
@@ -9803,7 +9822,7 @@
 	
 	// A special extend for ajax options
 	// that takes "flat" options (not to be deep extended)
-	// Fixes #9887
+	// Fixes trac-9887
 	function ajaxExtend( target, src ) {
 		var key, deep,
 			flatOptions = jQuery.ajaxSettings.flatOptions || {};
@@ -10119,8 +10138,8 @@
 				// Context for global events is callbackContext if it is a DOM node or jQuery collection
 				globalEventContext = s.context &&
 					( callbackContext.nodeType || callbackContext.jquery ) ?
-						jQuery( callbackContext ) :
-						jQuery.event,
+					jQuery( callbackContext ) :
+					jQuery.event,
 	
 				// Deferreds
 				deferred = jQuery.Deferred(),
@@ -10214,12 +10233,12 @@
 			deferred.promise( jqXHR );
 	
 			// Add protocol if not provided (prefilters might expect it)
-			// Handle falsy url in the settings object (#10093: consistency with old signature)
+			// Handle falsy url in the settings object (trac-10093: consistency with old signature)
 			// We also use the url parameter if available
 			s.url = ( ( url || s.url || location.href ) + "" )
 				.replace( rprotocol, location.protocol + "//" );
 	
-			// Alias method option to type as per ticket #12004
+			// Alias method option to type as per ticket trac-12004
 			s.type = options.method || options.type || s.method || s.type;
 	
 			// Extract dataTypes list
@@ -10262,7 +10281,7 @@
 			}
 	
 			// We can fire global events as of now if asked to
-			// Don't fire events if jQuery.event is undefined in an AMD-usage scenario (#15118)
+			// Don't fire events if jQuery.event is undefined in an AMD-usage scenario (trac-15118)
 			fireGlobals = jQuery.event && s.global;
 	
 			// Watch for a new set of requests
@@ -10291,7 +10310,7 @@
 				if ( s.data && ( s.processData || typeof s.data === "string" ) ) {
 					cacheURL += ( rquery.test( cacheURL ) ? "&" : "?" ) + s.data;
 	
-					// #9682: remove data so that it's not used in an eventual retry
+					// trac-9682: remove data so that it's not used in an eventual retry
 					delete s.data;
 				}
 	
@@ -10432,8 +10451,10 @@
 					response = ajaxHandleResponses( s, jqXHR, responses );
 				}
 	
-				// Use a noop converter for missing script
-				if ( !isSuccess && jQuery.inArray( "script", s.dataTypes ) > -1 ) {
+				// Use a noop converter for missing script but not if jsonp
+				if ( !isSuccess &&
+					jQuery.inArray( "script", s.dataTypes ) > -1 &&
+					jQuery.inArray( "json", s.dataTypes ) < 0 ) {
 					s.converters[ "text script" ] = function() {};
 				}
 	
@@ -10562,7 +10583,7 @@
 		return jQuery.ajax( {
 			url: url,
 	
-			// Make this explicit, since user can override this through ajaxSetup (#11264)
+			// Make this explicit, since user can override this through ajaxSetup (trac-11264)
 			type: "GET",
 			dataType: "script",
 			cache: true,
@@ -10671,7 +10692,7 @@
 			0: 200,
 	
 			// Support: IE <=9 only
-			// #1450: sometimes IE returns 1223 when it should be 204
+			// trac-1450: sometimes IE returns 1223 when it should be 204
 			1223: 204
 		},
 		xhrSupported = jQuery.ajaxSettings.xhr();
@@ -10743,7 +10764,7 @@
 									} else {
 										complete(
 	
-											// File: protocol always yields status 0; see #8605, #14207
+											// File: protocol always yields status 0; see trac-8605, trac-14207
 											xhr.status,
 											xhr.statusText
 										);
@@ -10804,7 +10825,7 @@
 						xhr.send( options.hasContent && options.data || null );
 					} catch ( e ) {
 	
-						// #14683: Only rethrow if this hasn't been notified as an error yet
+						// trac-14683: Only rethrow if this hasn't been notified as an error yet
 						if ( callback ) {
 							throw e;
 						}
@@ -11171,12 +11192,6 @@
 				options.using.call( elem, props );
 	
 			} else {
-				if ( typeof props.top === "number" ) {
-					props.top += "px";
-				}
-				if ( typeof props.left === "number" ) {
-					props.left += "px";
-				}
 				curElem.css( props );
 			}
 		}
@@ -11345,8 +11360,11 @@
 	
 	// Create innerHeight, innerWidth, height, width, outerHeight and outerWidth methods
 	jQuery.each( { Height: "height", Width: "width" }, function( name, type ) {
-		jQuery.each( { padding: "inner" + name, content: type, "": "outer" + name },
-			function( defaultExtra, funcName ) {
+		jQuery.each( {
+			padding: "inner" + name,
+			content: type,
+			"": "outer" + name
+		}, function( defaultExtra, funcName ) {
 	
 			// Margin is only for outerHeight, outerWidth
 			jQuery.fn[ funcName ] = function( margin, value ) {
@@ -11431,7 +11449,8 @@
 		}
 	} );
 	
-	jQuery.each( ( "blur focus focusin focusout resize scroll click dblclick " +
+	jQuery.each(
+		( "blur focus focusin focusout resize scroll click dblclick " +
 		"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
 		"change select submit keydown keypress keyup contextmenu" ).split( " " ),
 		function( _i, name ) {
@@ -11442,14 +11461,17 @@
 					this.on( name, null, data, fn ) :
 					this.trigger( name );
 			};
-		} );
+		}
+	);
 	
 	
 	
 	
 	// Support: Android <=4.0 only
 	// Make sure we trim BOM and NBSP
-	var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+	// Require that the "whitespace run" starts from a non-whitespace
+	// to avoid O(N^2) behavior when the engine would try matching "\s+$" at each space position.
+	var rtrim = /^[\s\uFEFF\xA0]+|([^\s\uFEFF\xA0])[\s\uFEFF\xA0]+$/g;
 	
 	// Bind a function to a context, optionally partially applying any
 	// arguments.
@@ -11516,7 +11538,7 @@
 	jQuery.trim = function( text ) {
 		return text == null ?
 			"" :
-			( text + "" ).replace( rtrim, "" );
+			( text + "" ).replace( rtrim, "$1" );
 	};
 	
 	
@@ -11564,8 +11586,8 @@
 	};
 	
 	// Expose jQuery and $ identifiers, even in AMD
-	// (#7102#comment:10, https://github.com/jquery/jquery/pull/557)
-	// and CommonJS for browser emulators (#13566)
+	// (trac-7102#comment:10, https://github.com/jquery/jquery/pull/557)
+	// and CommonJS for browser emulators (trac-13566)
 	if ( typeof noGlobal === "undefined" ) {
 		window.jQuery = window.$ = jQuery;
 	}
@@ -11577,9 +11599,89 @@
 	} );
 
 
-/***/ },
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var root = __webpack_require__(25);
+	
+	/** Built-in value references. */
+	var Symbol = root.Symbol;
+	
+	module.exports = Symbol;
+
+
+/***/ }),
 /* 6 */
-/***/ function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var baseGetTag = __webpack_require__(19),
+	    getPrototype = __webpack_require__(21),
+	    isObjectLike = __webpack_require__(26);
+	
+	/** `Object#toString` result references. */
+	var objectTag = '[object Object]';
+	
+	/** Used for built-in method references. */
+	var funcProto = Function.prototype,
+	    objectProto = Object.prototype;
+	
+	/** Used to resolve the decompiled source of functions. */
+	var funcToString = funcProto.toString;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/** Used to infer the `Object` constructor. */
+	var objectCtorString = funcToString.call(Object);
+	
+	/**
+	 * Checks if `value` is a plain object, that is, an object created by the
+	 * `Object` constructor or one with a `[[Prototype]]` of `null`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.8.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 * }
+	 *
+	 * _.isPlainObject(new Foo);
+	 * // => false
+	 *
+	 * _.isPlainObject([1, 2, 3]);
+	 * // => false
+	 *
+	 * _.isPlainObject({ 'x': 0, 'y': 0 });
+	 * // => true
+	 *
+	 * _.isPlainObject(Object.create(null));
+	 * // => true
+	 */
+	function isPlainObject(value) {
+	  if (!isObjectLike(value) || baseGetTag(value) != objectTag) {
+	    return false;
+	  }
+	  var proto = getPrototype(value);
+	  if (proto === null) {
+	    return true;
+	  }
+	  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
+	  return typeof Ctor == 'function' && Ctor instanceof Ctor &&
+	    funcToString.call(Ctor) == objectCtorString;
+	}
+	
+	module.exports = isPlainObject;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
 
 	"use strict";
 	
@@ -11618,9 +11720,9 @@
 	  });
 	}
 
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -11628,11 +11730,11 @@
 	exports.ActionTypes = undefined;
 	exports['default'] = createStore;
 	
-	var _isPlainObject = __webpack_require__(11);
+	var _isPlainObject = __webpack_require__(6);
 	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 	
-	var _symbolObservable = __webpack_require__(31);
+	var _symbolObservable = __webpack_require__(32);
 	
 	var _symbolObservable2 = _interopRequireDefault(_symbolObservable);
 	
@@ -11884,36 +11986,36 @@
 	  }, _ref2[_symbolObservable2['default']] = observable, _ref2;
 	}
 
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
 	exports.__esModule = true;
 	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
 	
-	var _createStore = __webpack_require__(7);
+	var _createStore = __webpack_require__(8);
 	
 	var _createStore2 = _interopRequireDefault(_createStore);
 	
-	var _combineReducers = __webpack_require__(22);
+	var _combineReducers = __webpack_require__(30);
 	
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 	
-	var _bindActionCreators = __webpack_require__(21);
+	var _bindActionCreators = __webpack_require__(29);
 	
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 	
-	var _applyMiddleware = __webpack_require__(20);
+	var _applyMiddleware = __webpack_require__(28);
 	
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 	
-	var _compose = __webpack_require__(6);
+	var _compose = __webpack_require__(7);
 	
 	var _compose2 = _interopRequireDefault(_compose);
 	
-	var _warning = __webpack_require__(9);
+	var _warning = __webpack_require__(10);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -11936,9 +12038,9 @@
 	exports.compose = _compose2['default'];
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
-/***/ },
-/* 9 */
-/***/ function(module, exports) {
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -11966,89 +12068,79 @@
 	  /* eslint-enable no-empty */
 	}
 
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var root = __webpack_require__(29);
-	
-	/** Built-in value references. */
-	var Symbol = root.Symbol;
-	
-	module.exports = Symbol;
-
-
-/***/ },
+/***/ }),
 /* 11 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	var baseGetTag = __webpack_require__(23),
-	    getPrototype = __webpack_require__(25),
-	    isObjectLike = __webpack_require__(30);
+	/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+	            (typeof self !== "undefined" && self) ||
+	            window;
+	var apply = Function.prototype.apply;
 	
-	/** `Object#toString` result references. */
-	var objectTag = '[object Object]';
+	// DOM APIs, for completeness
 	
-	/** Used for built-in method references. */
-	var funcProto = Function.prototype,
-	    objectProto = Object.prototype;
-	
-	/** Used to resolve the decompiled source of functions. */
-	var funcToString = funcProto.toString;
-	
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-	
-	/** Used to infer the `Object` constructor. */
-	var objectCtorString = funcToString.call(Object);
-	
-	/**
-	 * Checks if `value` is a plain object, that is, an object created by the
-	 * `Object` constructor or one with a `[[Prototype]]` of `null`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 0.8.0
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
-	 * @example
-	 *
-	 * function Foo() {
-	 *   this.a = 1;
-	 * }
-	 *
-	 * _.isPlainObject(new Foo);
-	 * // => false
-	 *
-	 * _.isPlainObject([1, 2, 3]);
-	 * // => false
-	 *
-	 * _.isPlainObject({ 'x': 0, 'y': 0 });
-	 * // => true
-	 *
-	 * _.isPlainObject(Object.create(null));
-	 * // => true
-	 */
-	function isPlainObject(value) {
-	  if (!isObjectLike(value) || baseGetTag(value) != objectTag) {
-	    return false;
+	exports.setTimeout = function() {
+	  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+	};
+	exports.setInterval = function() {
+	  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+	};
+	exports.clearTimeout =
+	exports.clearInterval = function(timeout) {
+	  if (timeout) {
+	    timeout.close();
 	  }
-	  var proto = getPrototype(value);
-	  if (proto === null) {
-	    return true;
-	  }
-	  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
-	  return typeof Ctor == 'function' && Ctor instanceof Ctor &&
-	    funcToString.call(Ctor) == objectCtorString;
+	};
+	
+	function Timeout(id, clearFn) {
+	  this._id = id;
+	  this._clearFn = clearFn;
 	}
+	Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+	Timeout.prototype.close = function() {
+	  this._clearFn.call(scope, this._id);
+	};
 	
-	module.exports = isPlainObject;
+	// Does not start the time, just sets up the members needed.
+	exports.enroll = function(item, msecs) {
+	  clearTimeout(item._idleTimeoutId);
+	  item._idleTimeout = msecs;
+	};
+	
+	exports.unenroll = function(item) {
+	  clearTimeout(item._idleTimeoutId);
+	  item._idleTimeout = -1;
+	};
+	
+	exports._unrefActive = exports.active = function(item) {
+	  clearTimeout(item._idleTimeoutId);
+	
+	  var msecs = item._idleTimeout;
+	  if (msecs >= 0) {
+	    item._idleTimeoutId = setTimeout(function onTimeout() {
+	      if (item._onTimeout)
+	        item._onTimeout();
+	    }, msecs);
+	  }
+	};
+	
+	// setimmediate attaches itself to the global object
+	__webpack_require__(31);
+	// On some exotic environments, it's not clear which object `setimmediate` was
+	// able to install onto.  Search each possibility in the same order as the
+	// `setimmediate` library.
+	exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+	                       (typeof global !== "undefined" && global.setImmediate) ||
+	                       (this && this.setImmediate);
+	exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+	                         (typeof global !== "undefined" && global.clearImmediate) ||
+	                         (this && this.clearImmediate);
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
-
-/***/ },
+/***/ }),
 /* 12 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*TMODJS:{}*/
 	!function () {
@@ -12130,9 +12222,9 @@
 		}, module.exports = a
 	}();
 
-/***/ },
+/***/ }),
 /* 13 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process) {/**
 	 * Tween.js - Licensed under the MIT license
@@ -13019,393 +13111,16 @@
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
-/***/ },
+/***/ }),
 /* 14 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	
-	/**
-	 * This is the web browser implementation of `debug()`.
-	 *
-	 * Expose `debug()` as the module.
-	 */
-	
-	exports = module.exports = __webpack_require__(15);
-	exports.log = log;
-	exports.formatArgs = formatArgs;
-	exports.save = save;
-	exports.load = load;
-	exports.useColors = useColors;
-	exports.storage = 'undefined' != typeof chrome
-	               && 'undefined' != typeof chrome.storage
-	                  ? chrome.storage.local
-	                  : localstorage();
-	
-	/**
-	 * Colors.
-	 */
-	
-	exports.colors = [
-	  'lightseagreen',
-	  'forestgreen',
-	  'goldenrod',
-	  'dodgerblue',
-	  'darkorchid',
-	  'crimson'
-	];
-	
-	/**
-	 * Currently only WebKit-based Web Inspectors, Firefox >= v31,
-	 * and the Firebug extension (any Firefox version) are known
-	 * to support "%c" CSS customizations.
-	 *
-	 * TODO: add a `localStorage` variable to explicitly enable/disable colors
-	 */
-	
-	function useColors() {
-	  // is webkit? http://stackoverflow.com/a/16459606/376773
-	  return ('WebkitAppearance' in document.documentElement.style) ||
-	    // is firebug? http://stackoverflow.com/a/398120/376773
-	    (window.console && (console.firebug || (console.exception && console.table))) ||
-	    // is firefox >= v31?
-	    // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
-	    (navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31);
-	}
-	
-	/**
-	 * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
-	 */
-	
-	exports.formatters.j = function(v) {
-	  return JSON.stringify(v);
-	};
-	
-	
-	/**
-	 * Colorize log arguments if enabled.
-	 *
-	 * @api public
-	 */
-	
-	function formatArgs() {
-	  var args = arguments;
-	  var useColors = this.useColors;
-	
-	  args[0] = (useColors ? '%c' : '')
-	    + this.namespace
-	    + (useColors ? ' %c' : ' ')
-	    + args[0]
-	    + (useColors ? '%c ' : ' ')
-	    + '+' + exports.humanize(this.diff);
-	
-	  if (!useColors) return args;
-	
-	  var c = 'color: ' + this.color;
-	  args = [args[0], c, 'color: inherit'].concat(Array.prototype.slice.call(args, 1));
-	
-	  // the final "%c" is somewhat tricky, because there could be other
-	  // arguments passed either before or after the %c, so we need to
-	  // figure out the correct index to insert the CSS into
-	  var index = 0;
-	  var lastC = 0;
-	  args[0].replace(/%[a-z%]/g, function(match) {
-	    if ('%%' === match) return;
-	    index++;
-	    if ('%c' === match) {
-	      // we only are interested in the *last* %c
-	      // (the user may have provided their own)
-	      lastC = index;
-	    }
-	  });
-	
-	  args.splice(lastC, 0, c);
-	  return args;
-	}
-	
-	/**
-	 * Invokes `console.log()` when available.
-	 * No-op when `console.log` is not a "function".
-	 *
-	 * @api public
-	 */
-	
-	function log() {
-	  // this hackery is required for IE8/9, where
-	  // the `console.log` function doesn't have 'apply'
-	  return 'object' === typeof console
-	    && console.log
-	    && Function.prototype.apply.call(console.log, console, arguments);
-	}
-	
-	/**
-	 * Save `namespaces`.
-	 *
-	 * @param {String} namespaces
-	 * @api private
-	 */
-	
-	function save(namespaces) {
-	  try {
-	    if (null == namespaces) {
-	      exports.storage.removeItem('debug');
-	    } else {
-	      exports.storage.debug = namespaces;
-	    }
-	  } catch(e) {}
-	}
-	
-	/**
-	 * Load `namespaces`.
-	 *
-	 * @return {String} returns the previously persisted debug modes
-	 * @api private
-	 */
-	
-	function load() {
-	  var r;
-	  try {
-	    r = exports.storage.debug;
-	  } catch(e) {}
-	  return r;
-	}
-	
-	/**
-	 * Enable namespaces listed in `localStorage.debug` initially.
-	 */
-	
-	exports.enable(load());
-	
-	/**
-	 * Localstorage attempts to return the localstorage.
-	 *
-	 * This is necessary because safari throws
-	 * when a user disables cookies/localstorage
-	 * and you attempt to access it.
-	 *
-	 * @return {LocalStorage}
-	 * @api private
-	 */
-	
-	function localstorage(){
-	  try {
-	    return window.localStorage;
-	  } catch (e) {}
-	}
+	module.exports = __webpack_require__(15);
 
 
-/***/ },
+/***/ }),
 /* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	/**
-	 * This is the common logic for both the Node.js and web browser
-	 * implementations of `debug()`.
-	 *
-	 * Expose `debug()` as the module.
-	 */
-	
-	exports = module.exports = debug;
-	exports.coerce = coerce;
-	exports.disable = disable;
-	exports.enable = enable;
-	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(18);
-	
-	/**
-	 * The currently active debug mode names, and names to skip.
-	 */
-	
-	exports.names = [];
-	exports.skips = [];
-	
-	/**
-	 * Map of special "%n" handling functions, for the debug "format" argument.
-	 *
-	 * Valid key names are a single, lowercased letter, i.e. "n".
-	 */
-	
-	exports.formatters = {};
-	
-	/**
-	 * Previously assigned color.
-	 */
-	
-	var prevColor = 0;
-	
-	/**
-	 * Previous log timestamp.
-	 */
-	
-	var prevTime;
-	
-	/**
-	 * Select a color.
-	 *
-	 * @return {Number}
-	 * @api private
-	 */
-	
-	function selectColor() {
-	  return exports.colors[prevColor++ % exports.colors.length];
-	}
-	
-	/**
-	 * Create a debugger with the given `namespace`.
-	 *
-	 * @param {String} namespace
-	 * @return {Function}
-	 * @api public
-	 */
-	
-	function debug(namespace) {
-	
-	  // define the `disabled` version
-	  function disabled() {
-	  }
-	  disabled.enabled = false;
-	
-	  // define the `enabled` version
-	  function enabled() {
-	
-	    var self = enabled;
-	
-	    // set `diff` timestamp
-	    var curr = +new Date();
-	    var ms = curr - (prevTime || curr);
-	    self.diff = ms;
-	    self.prev = prevTime;
-	    self.curr = curr;
-	    prevTime = curr;
-	
-	    // add the `color` if not set
-	    if (null == self.useColors) self.useColors = exports.useColors();
-	    if (null == self.color && self.useColors) self.color = selectColor();
-	
-	    var args = Array.prototype.slice.call(arguments);
-	
-	    args[0] = exports.coerce(args[0]);
-	
-	    if ('string' !== typeof args[0]) {
-	      // anything else let's inspect with %o
-	      args = ['%o'].concat(args);
-	    }
-	
-	    // apply any `formatters` transformations
-	    var index = 0;
-	    args[0] = args[0].replace(/%([a-z%])/g, function(match, format) {
-	      // if we encounter an escaped % then don't increase the array index
-	      if (match === '%%') return match;
-	      index++;
-	      var formatter = exports.formatters[format];
-	      if ('function' === typeof formatter) {
-	        var val = args[index];
-	        match = formatter.call(self, val);
-	
-	        // now we need to remove `args[index]` since it's inlined in the `format`
-	        args.splice(index, 1);
-	        index--;
-	      }
-	      return match;
-	    });
-	
-	    if ('function' === typeof exports.formatArgs) {
-	      args = exports.formatArgs.apply(self, args);
-	    }
-	    var logFn = enabled.log || exports.log || console.log.bind(console);
-	    logFn.apply(self, args);
-	  }
-	  enabled.enabled = true;
-	
-	  var fn = exports.enabled(namespace) ? enabled : disabled;
-	
-	  fn.namespace = namespace;
-	
-	  return fn;
-	}
-	
-	/**
-	 * Enables a debug mode by namespaces. This can include modes
-	 * separated by a colon and wildcards.
-	 *
-	 * @param {String} namespaces
-	 * @api public
-	 */
-	
-	function enable(namespaces) {
-	  exports.save(namespaces);
-	
-	  var split = (namespaces || '').split(/[\s,]+/);
-	  var len = split.length;
-	
-	  for (var i = 0; i < len; i++) {
-	    if (!split[i]) continue; // ignore empty strings
-	    namespaces = split[i].replace(/\*/g, '.*?');
-	    if (namespaces[0] === '-') {
-	      exports.skips.push(new RegExp('^' + namespaces.substr(1) + '$'));
-	    } else {
-	      exports.names.push(new RegExp('^' + namespaces + '$'));
-	    }
-	  }
-	}
-	
-	/**
-	 * Disable debug output.
-	 *
-	 * @api public
-	 */
-	
-	function disable() {
-	  exports.enable('');
-	}
-	
-	/**
-	 * Returns true if the given mode name is enabled, false otherwise.
-	 *
-	 * @param {String} name
-	 * @return {Boolean}
-	 * @api public
-	 */
-	
-	function enabled(name) {
-	  var i, len;
-	  for (i = 0, len = exports.skips.length; i < len; i++) {
-	    if (exports.skips[i].test(name)) {
-	      return false;
-	    }
-	  }
-	  for (i = 0, len = exports.names.length; i < len; i++) {
-	    if (exports.names[i].test(name)) {
-	      return true;
-	    }
-	  }
-	  return false;
-	}
-	
-	/**
-	 * Coerce `val`.
-	 *
-	 * @param {Mixed} val
-	 * @return {Mixed}
-	 * @api private
-	 */
-	
-	function coerce(val) {
-	  if (val instanceof Error) return val.stack || val.message;
-	  return val;
-	}
-
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(17);
-
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_LOCAL_MODULE_0__;var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(setImmediate, process) {/*global define*/
 	!(function (name, definition) {
@@ -13420,7 +13135,7 @@
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__WEBPACK_LOCAL_MODULE_0__], __WEBPACK_AMD_DEFINE_FACTORY__ = (definition), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (hasExports) {
 	    // Node.js Module
-	    module.exports = definition(__webpack_require__(14)('eventproxy'));
+	    module.exports = definition(__webpack_require__(16)('eventproxy'));
 	  } else {
 	    // Assign to common namespaces or simply the global object (window)
 	    this[name] = definition();
@@ -14028,11 +13743,388 @@
 	  return EventProxy;
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2).setImmediate, __webpack_require__(1)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11).setImmediate, __webpack_require__(1)))
 
-/***/ },
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * This is the web browser implementation of `debug()`.
+	 *
+	 * Expose `debug()` as the module.
+	 */
+	
+	exports = module.exports = __webpack_require__(17);
+	exports.log = log;
+	exports.formatArgs = formatArgs;
+	exports.save = save;
+	exports.load = load;
+	exports.useColors = useColors;
+	exports.storage = 'undefined' != typeof chrome
+	               && 'undefined' != typeof chrome.storage
+	                  ? chrome.storage.local
+	                  : localstorage();
+	
+	/**
+	 * Colors.
+	 */
+	
+	exports.colors = [
+	  'lightseagreen',
+	  'forestgreen',
+	  'goldenrod',
+	  'dodgerblue',
+	  'darkorchid',
+	  'crimson'
+	];
+	
+	/**
+	 * Currently only WebKit-based Web Inspectors, Firefox >= v31,
+	 * and the Firebug extension (any Firefox version) are known
+	 * to support "%c" CSS customizations.
+	 *
+	 * TODO: add a `localStorage` variable to explicitly enable/disable colors
+	 */
+	
+	function useColors() {
+	  // is webkit? http://stackoverflow.com/a/16459606/376773
+	  return ('WebkitAppearance' in document.documentElement.style) ||
+	    // is firebug? http://stackoverflow.com/a/398120/376773
+	    (window.console && (console.firebug || (console.exception && console.table))) ||
+	    // is firefox >= v31?
+	    // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
+	    (navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31);
+	}
+	
+	/**
+	 * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
+	 */
+	
+	exports.formatters.j = function(v) {
+	  return JSON.stringify(v);
+	};
+	
+	
+	/**
+	 * Colorize log arguments if enabled.
+	 *
+	 * @api public
+	 */
+	
+	function formatArgs() {
+	  var args = arguments;
+	  var useColors = this.useColors;
+	
+	  args[0] = (useColors ? '%c' : '')
+	    + this.namespace
+	    + (useColors ? ' %c' : ' ')
+	    + args[0]
+	    + (useColors ? '%c ' : ' ')
+	    + '+' + exports.humanize(this.diff);
+	
+	  if (!useColors) return args;
+	
+	  var c = 'color: ' + this.color;
+	  args = [args[0], c, 'color: inherit'].concat(Array.prototype.slice.call(args, 1));
+	
+	  // the final "%c" is somewhat tricky, because there could be other
+	  // arguments passed either before or after the %c, so we need to
+	  // figure out the correct index to insert the CSS into
+	  var index = 0;
+	  var lastC = 0;
+	  args[0].replace(/%[a-z%]/g, function(match) {
+	    if ('%%' === match) return;
+	    index++;
+	    if ('%c' === match) {
+	      // we only are interested in the *last* %c
+	      // (the user may have provided their own)
+	      lastC = index;
+	    }
+	  });
+	
+	  args.splice(lastC, 0, c);
+	  return args;
+	}
+	
+	/**
+	 * Invokes `console.log()` when available.
+	 * No-op when `console.log` is not a "function".
+	 *
+	 * @api public
+	 */
+	
+	function log() {
+	  // this hackery is required for IE8/9, where
+	  // the `console.log` function doesn't have 'apply'
+	  return 'object' === typeof console
+	    && console.log
+	    && Function.prototype.apply.call(console.log, console, arguments);
+	}
+	
+	/**
+	 * Save `namespaces`.
+	 *
+	 * @param {String} namespaces
+	 * @api private
+	 */
+	
+	function save(namespaces) {
+	  try {
+	    if (null == namespaces) {
+	      exports.storage.removeItem('debug');
+	    } else {
+	      exports.storage.debug = namespaces;
+	    }
+	  } catch(e) {}
+	}
+	
+	/**
+	 * Load `namespaces`.
+	 *
+	 * @return {String} returns the previously persisted debug modes
+	 * @api private
+	 */
+	
+	function load() {
+	  var r;
+	  try {
+	    r = exports.storage.debug;
+	  } catch(e) {}
+	  return r;
+	}
+	
+	/**
+	 * Enable namespaces listed in `localStorage.debug` initially.
+	 */
+	
+	exports.enable(load());
+	
+	/**
+	 * Localstorage attempts to return the localstorage.
+	 *
+	 * This is necessary because safari throws
+	 * when a user disables cookies/localstorage
+	 * and you attempt to access it.
+	 *
+	 * @return {LocalStorage}
+	 * @api private
+	 */
+	
+	function localstorage(){
+	  try {
+	    return window.localStorage;
+	  } catch (e) {}
+	}
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	
+	/**
+	 * This is the common logic for both the Node.js and web browser
+	 * implementations of `debug()`.
+	 *
+	 * Expose `debug()` as the module.
+	 */
+	
+	exports = module.exports = debug;
+	exports.coerce = coerce;
+	exports.disable = disable;
+	exports.enable = enable;
+	exports.enabled = enabled;
+	exports.humanize = __webpack_require__(18);
+	
+	/**
+	 * The currently active debug mode names, and names to skip.
+	 */
+	
+	exports.names = [];
+	exports.skips = [];
+	
+	/**
+	 * Map of special "%n" handling functions, for the debug "format" argument.
+	 *
+	 * Valid key names are a single, lowercased letter, i.e. "n".
+	 */
+	
+	exports.formatters = {};
+	
+	/**
+	 * Previously assigned color.
+	 */
+	
+	var prevColor = 0;
+	
+	/**
+	 * Previous log timestamp.
+	 */
+	
+	var prevTime;
+	
+	/**
+	 * Select a color.
+	 *
+	 * @return {Number}
+	 * @api private
+	 */
+	
+	function selectColor() {
+	  return exports.colors[prevColor++ % exports.colors.length];
+	}
+	
+	/**
+	 * Create a debugger with the given `namespace`.
+	 *
+	 * @param {String} namespace
+	 * @return {Function}
+	 * @api public
+	 */
+	
+	function debug(namespace) {
+	
+	  // define the `disabled` version
+	  function disabled() {
+	  }
+	  disabled.enabled = false;
+	
+	  // define the `enabled` version
+	  function enabled() {
+	
+	    var self = enabled;
+	
+	    // set `diff` timestamp
+	    var curr = +new Date();
+	    var ms = curr - (prevTime || curr);
+	    self.diff = ms;
+	    self.prev = prevTime;
+	    self.curr = curr;
+	    prevTime = curr;
+	
+	    // add the `color` if not set
+	    if (null == self.useColors) self.useColors = exports.useColors();
+	    if (null == self.color && self.useColors) self.color = selectColor();
+	
+	    var args = Array.prototype.slice.call(arguments);
+	
+	    args[0] = exports.coerce(args[0]);
+	
+	    if ('string' !== typeof args[0]) {
+	      // anything else let's inspect with %o
+	      args = ['%o'].concat(args);
+	    }
+	
+	    // apply any `formatters` transformations
+	    var index = 0;
+	    args[0] = args[0].replace(/%([a-z%])/g, function(match, format) {
+	      // if we encounter an escaped % then don't increase the array index
+	      if (match === '%%') return match;
+	      index++;
+	      var formatter = exports.formatters[format];
+	      if ('function' === typeof formatter) {
+	        var val = args[index];
+	        match = formatter.call(self, val);
+	
+	        // now we need to remove `args[index]` since it's inlined in the `format`
+	        args.splice(index, 1);
+	        index--;
+	      }
+	      return match;
+	    });
+	
+	    if ('function' === typeof exports.formatArgs) {
+	      args = exports.formatArgs.apply(self, args);
+	    }
+	    var logFn = enabled.log || exports.log || console.log.bind(console);
+	    logFn.apply(self, args);
+	  }
+	  enabled.enabled = true;
+	
+	  var fn = exports.enabled(namespace) ? enabled : disabled;
+	
+	  fn.namespace = namespace;
+	
+	  return fn;
+	}
+	
+	/**
+	 * Enables a debug mode by namespaces. This can include modes
+	 * separated by a colon and wildcards.
+	 *
+	 * @param {String} namespaces
+	 * @api public
+	 */
+	
+	function enable(namespaces) {
+	  exports.save(namespaces);
+	
+	  var split = (namespaces || '').split(/[\s,]+/);
+	  var len = split.length;
+	
+	  for (var i = 0; i < len; i++) {
+	    if (!split[i]) continue; // ignore empty strings
+	    namespaces = split[i].replace(/\*/g, '.*?');
+	    if (namespaces[0] === '-') {
+	      exports.skips.push(new RegExp('^' + namespaces.substr(1) + '$'));
+	    } else {
+	      exports.names.push(new RegExp('^' + namespaces + '$'));
+	    }
+	  }
+	}
+	
+	/**
+	 * Disable debug output.
+	 *
+	 * @api public
+	 */
+	
+	function disable() {
+	  exports.enable('');
+	}
+	
+	/**
+	 * Returns true if the given mode name is enabled, false otherwise.
+	 *
+	 * @param {String} name
+	 * @return {Boolean}
+	 * @api public
+	 */
+	
+	function enabled(name) {
+	  var i, len;
+	  for (i = 0, len = exports.skips.length; i < len; i++) {
+	    if (exports.skips[i].test(name)) {
+	      return false;
+	    }
+	  }
+	  for (i = 0, len = exports.names.length; i < len; i++) {
+	    if (exports.names[i].test(name)) {
+	      return true;
+	    }
+	  }
+	  return false;
+	}
+	
+	/**
+	 * Coerce `val`.
+	 *
+	 * @param {Mixed} val
+	 * @return {Mixed}
+	 * @api private
+	 */
+	
+	function coerce(val) {
+	  if (val instanceof Error) return val.stack || val.message;
+	  return val;
+	}
+
+
+/***/ }),
 /* 18 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * Helpers.
@@ -14161,9 +14253,217 @@
 	}
 
 
-/***/ },
+/***/ }),
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var Symbol = __webpack_require__(5),
+	    getRawTag = __webpack_require__(22),
+	    objectToString = __webpack_require__(23);
+	
+	/** `Object#toString` result references. */
+	var nullTag = '[object Null]',
+	    undefinedTag = '[object Undefined]';
+	
+	/** Built-in value references. */
+	var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
+	
+	/**
+	 * The base implementation of `getTag` without fallbacks for buggy environments.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @returns {string} Returns the `toStringTag`.
+	 */
+	function baseGetTag(value) {
+	  if (value == null) {
+	    return value === undefined ? undefinedTag : nullTag;
+	  }
+	  return (symToStringTag && symToStringTag in Object(value))
+	    ? getRawTag(value)
+	    : objectToString(value);
+	}
+	
+	module.exports = baseGetTag;
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
+	var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+	
+	module.exports = freeGlobal;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var overArg = __webpack_require__(24);
+	
+	/** Built-in value references. */
+	var getPrototype = overArg(Object.getPrototypeOf, Object);
+	
+	module.exports = getPrototype;
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var Symbol = __webpack_require__(5);
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var nativeObjectToString = objectProto.toString;
+	
+	/** Built-in value references. */
+	var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
+	
+	/**
+	 * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @returns {string} Returns the raw `toStringTag`.
+	 */
+	function getRawTag(value) {
+	  var isOwn = hasOwnProperty.call(value, symToStringTag),
+	      tag = value[symToStringTag];
+	
+	  try {
+	    value[symToStringTag] = undefined;
+	    var unmasked = true;
+	  } catch (e) {}
+	
+	  var result = nativeObjectToString.call(value);
+	  if (unmasked) {
+	    if (isOwn) {
+	      value[symToStringTag] = tag;
+	    } else {
+	      delete value[symToStringTag];
+	    }
+	  }
+	  return result;
+	}
+	
+	module.exports = getRawTag;
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports) {
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var nativeObjectToString = objectProto.toString;
+	
+	/**
+	 * Converts `value` to a string using `Object.prototype.toString`.
+	 *
+	 * @private
+	 * @param {*} value The value to convert.
+	 * @returns {string} Returns the converted string.
+	 */
+	function objectToString(value) {
+	  return nativeObjectToString.call(value);
+	}
+	
+	module.exports = objectToString;
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+	/**
+	 * Creates a unary function that invokes `func` with its argument transformed.
+	 *
+	 * @private
+	 * @param {Function} func The function to wrap.
+	 * @param {Function} transform The argument transform.
+	 * @returns {Function} Returns the new function.
+	 */
+	function overArg(func, transform) {
+	  return function(arg) {
+	    return func(transform(arg));
+	  };
+	}
+	
+	module.exports = overArg;
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var freeGlobal = __webpack_require__(20);
+	
+	/** Detect free variable `self`. */
+	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+	
+	/** Used as a reference to the global object. */
+	var root = freeGlobal || freeSelf || Function('return this')();
+	
+	module.exports = root;
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return value != null && typeof value == 'object';
+	}
+	
+	module.exports = isObjectLike;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process, setImmediate) {// vim:ts=4:sts=4:sw=4:
 	/*!
@@ -16242,11 +16542,11 @@
 	
 	});
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(2).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(11).setImmediate))
 
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -16256,7 +16556,7 @@
 	
 	exports['default'] = applyMiddleware;
 	
-	var _compose = __webpack_require__(6);
+	var _compose = __webpack_require__(7);
 	
 	var _compose2 = _interopRequireDefault(_compose);
 	
@@ -16307,9 +16607,9 @@
 	  };
 	}
 
-/***/ },
-/* 21 */
-/***/ function(module, exports) {
+/***/ }),
+/* 29 */
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -16363,22 +16663,22 @@
 	  return boundActionCreators;
 	}
 
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
 	exports.__esModule = true;
 	exports['default'] = combineReducers;
 	
-	var _createStore = __webpack_require__(7);
+	var _createStore = __webpack_require__(8);
 	
-	var _isPlainObject = __webpack_require__(11);
+	var _isPlainObject = __webpack_require__(6);
 	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 	
-	var _warning = __webpack_require__(9);
+	var _warning = __webpack_require__(10);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -16512,217 +16812,202 @@
 	}
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Symbol = __webpack_require__(10),
-	    getRawTag = __webpack_require__(26),
-	    objectToString = __webpack_require__(27);
-	
-	/** `Object#toString` result references. */
-	var nullTag = '[object Null]',
-	    undefinedTag = '[object Undefined]';
-	
-	/** Built-in value references. */
-	var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
-	
-	/**
-	 * The base implementation of `getTag` without fallbacks for buggy environments.
-	 *
-	 * @private
-	 * @param {*} value The value to query.
-	 * @returns {string} Returns the `toStringTag`.
-	 */
-	function baseGetTag(value) {
-	  if (value == null) {
-	    return value === undefined ? undefinedTag : nullTag;
-	  }
-	  return (symToStringTag && symToStringTag in Object(value))
-	    ? getRawTag(value)
-	    : objectToString(value);
-	}
-	
-	module.exports = baseGetTag;
-
-
-/***/ },
-/* 24 */
-/***/ function(module, exports) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
-	var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
-	
-	module.exports = freeGlobal;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var overArg = __webpack_require__(28);
-	
-	/** Built-in value references. */
-	var getPrototype = overArg(Object.getPrototypeOf, Object);
-	
-	module.exports = getPrototype;
-
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Symbol = __webpack_require__(10);
-	
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
-	
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-	
-	/**
-	 * Used to resolve the
-	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var nativeObjectToString = objectProto.toString;
-	
-	/** Built-in value references. */
-	var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
-	
-	/**
-	 * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
-	 *
-	 * @private
-	 * @param {*} value The value to query.
-	 * @returns {string} Returns the raw `toStringTag`.
-	 */
-	function getRawTag(value) {
-	  var isOwn = hasOwnProperty.call(value, symToStringTag),
-	      tag = value[symToStringTag];
-	
-	  try {
-	    value[symToStringTag] = undefined;
-	    var unmasked = true;
-	  } catch (e) {}
-	
-	  var result = nativeObjectToString.call(value);
-	  if (unmasked) {
-	    if (isOwn) {
-	      value[symToStringTag] = tag;
-	    } else {
-	      delete value[symToStringTag];
-	    }
-	  }
-	  return result;
-	}
-	
-	module.exports = getRawTag;
-
-
-/***/ },
-/* 27 */
-/***/ function(module, exports) {
-
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
-	
-	/**
-	 * Used to resolve the
-	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var nativeObjectToString = objectProto.toString;
-	
-	/**
-	 * Converts `value` to a string using `Object.prototype.toString`.
-	 *
-	 * @private
-	 * @param {*} value The value to convert.
-	 * @returns {string} Returns the converted string.
-	 */
-	function objectToString(value) {
-	  return nativeObjectToString.call(value);
-	}
-	
-	module.exports = objectToString;
-
-
-/***/ },
-/* 28 */
-/***/ function(module, exports) {
-
-	/**
-	 * Creates a unary function that invokes `func` with its argument transformed.
-	 *
-	 * @private
-	 * @param {Function} func The function to wrap.
-	 * @param {Function} transform The argument transform.
-	 * @returns {Function} Returns the new function.
-	 */
-	function overArg(func, transform) {
-	  return function(arg) {
-	    return func(transform(arg));
-	  };
-	}
-	
-	module.exports = overArg;
-
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var freeGlobal = __webpack_require__(24);
-	
-	/** Detect free variable `self`. */
-	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-	
-	/** Used as a reference to the global object. */
-	var root = freeGlobal || freeSelf || Function('return this')();
-	
-	module.exports = root;
-
-
-/***/ },
-/* 30 */
-/***/ function(module, exports) {
-
-	/**
-	 * Checks if `value` is object-like. A value is object-like if it's not `null`
-	 * and has a `typeof` result of "object".
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 4.0.0
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 * @example
-	 *
-	 * _.isObjectLike({});
-	 * // => true
-	 *
-	 * _.isObjectLike([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObjectLike(_.noop);
-	 * // => false
-	 *
-	 * _.isObjectLike(null);
-	 * // => false
-	 */
-	function isObjectLike(value) {
-	  return value != null && typeof value == 'object';
-	}
-	
-	module.exports = isObjectLike;
-
-
-/***/ },
+/***/ }),
 /* 31 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+	    "use strict";
+	
+	    if (global.setImmediate) {
+	        return;
+	    }
+	
+	    var nextHandle = 1; // Spec says greater than zero
+	    var tasksByHandle = {};
+	    var currentlyRunningATask = false;
+	    var doc = global.document;
+	    var registerImmediate;
+	
+	    function setImmediate(callback) {
+	      // Callback can either be a function or a string
+	      if (typeof callback !== "function") {
+	        callback = new Function("" + callback);
+	      }
+	      // Copy function arguments
+	      var args = new Array(arguments.length - 1);
+	      for (var i = 0; i < args.length; i++) {
+	          args[i] = arguments[i + 1];
+	      }
+	      // Store and register the task
+	      var task = { callback: callback, args: args };
+	      tasksByHandle[nextHandle] = task;
+	      registerImmediate(nextHandle);
+	      return nextHandle++;
+	    }
+	
+	    function clearImmediate(handle) {
+	        delete tasksByHandle[handle];
+	    }
+	
+	    function run(task) {
+	        var callback = task.callback;
+	        var args = task.args;
+	        switch (args.length) {
+	        case 0:
+	            callback();
+	            break;
+	        case 1:
+	            callback(args[0]);
+	            break;
+	        case 2:
+	            callback(args[0], args[1]);
+	            break;
+	        case 3:
+	            callback(args[0], args[1], args[2]);
+	            break;
+	        default:
+	            callback.apply(undefined, args);
+	            break;
+	        }
+	    }
+	
+	    function runIfPresent(handle) {
+	        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+	        // So if we're currently running a task, we'll need to delay this invocation.
+	        if (currentlyRunningATask) {
+	            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+	            // "too much recursion" error.
+	            setTimeout(runIfPresent, 0, handle);
+	        } else {
+	            var task = tasksByHandle[handle];
+	            if (task) {
+	                currentlyRunningATask = true;
+	                try {
+	                    run(task);
+	                } finally {
+	                    clearImmediate(handle);
+	                    currentlyRunningATask = false;
+	                }
+	            }
+	        }
+	    }
+	
+	    function installNextTickImplementation() {
+	        registerImmediate = function(handle) {
+	            process.nextTick(function () { runIfPresent(handle); });
+	        };
+	    }
+	
+	    function canUsePostMessage() {
+	        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+	        // where `global.postMessage` means something completely different and can't be used for this purpose.
+	        if (global.postMessage && !global.importScripts) {
+	            var postMessageIsAsynchronous = true;
+	            var oldOnMessage = global.onmessage;
+	            global.onmessage = function() {
+	                postMessageIsAsynchronous = false;
+	            };
+	            global.postMessage("", "*");
+	            global.onmessage = oldOnMessage;
+	            return postMessageIsAsynchronous;
+	        }
+	    }
+	
+	    function installPostMessageImplementation() {
+	        // Installs an event handler on `global` for the `message` event: see
+	        // * https://developer.mozilla.org/en/DOM/window.postMessage
+	        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+	
+	        var messagePrefix = "setImmediate$" + Math.random() + "$";
+	        var onGlobalMessage = function(event) {
+	            if (event.source === global &&
+	                typeof event.data === "string" &&
+	                event.data.indexOf(messagePrefix) === 0) {
+	                runIfPresent(+event.data.slice(messagePrefix.length));
+	            }
+	        };
+	
+	        if (global.addEventListener) {
+	            global.addEventListener("message", onGlobalMessage, false);
+	        } else {
+	            global.attachEvent("onmessage", onGlobalMessage);
+	        }
+	
+	        registerImmediate = function(handle) {
+	            global.postMessage(messagePrefix + handle, "*");
+	        };
+	    }
+	
+	    function installMessageChannelImplementation() {
+	        var channel = new MessageChannel();
+	        channel.port1.onmessage = function(event) {
+	            var handle = event.data;
+	            runIfPresent(handle);
+	        };
+	
+	        registerImmediate = function(handle) {
+	            channel.port2.postMessage(handle);
+	        };
+	    }
+	
+	    function installReadyStateChangeImplementation() {
+	        var html = doc.documentElement;
+	        registerImmediate = function(handle) {
+	            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+	            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+	            var script = doc.createElement("script");
+	            script.onreadystatechange = function () {
+	                runIfPresent(handle);
+	                script.onreadystatechange = null;
+	                html.removeChild(script);
+	                script = null;
+	            };
+	            html.appendChild(script);
+	        };
+	    }
+	
+	    function installSetTimeoutImplementation() {
+	        registerImmediate = function(handle) {
+	            setTimeout(runIfPresent, 0, handle);
+	        };
+	    }
+	
+	    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+	    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+	    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+	
+	    // Don't get fooled by e.g. browserify environments.
+	    if ({}.toString.call(global.process) === "[object process]") {
+	        // For Node.js before 0.9
+	        installNextTickImplementation();
+	
+	    } else if (canUsePostMessage()) {
+	        // For non-IE10 modern browsers
+	        installPostMessageImplementation();
+	
+	    } else if (global.MessageChannel) {
+	        // For web workers, where supported
+	        installMessageChannelImplementation();
+	
+	    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+	        // For IE 6–8
+	        installReadyStateChangeImplementation();
+	
+	    } else {
+	        // For older browsers
+	        installSetTimeoutImplementation();
+	    }
+	
+	    attachTo.setImmediate = setImmediate;
+	    attachTo.clearImmediate = clearImmediate;
+	}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(1)))
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, module) {'use strict';
 	
@@ -16730,7 +17015,7 @@
 	  value: true
 	});
 	
-	var _ponyfill = __webpack_require__(32);
+	var _ponyfill = __webpack_require__(33);
 	
 	var _ponyfill2 = _interopRequireDefault(_ponyfill);
 	
@@ -16753,11 +17038,11 @@
 	
 	var result = (0, _ponyfill2['default'])(root);
 	exports['default'] = result;
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(35)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(36)(module)))
 
-/***/ },
-/* 32 */
-/***/ function(module, exports) {
+/***/ }),
+/* 33 */
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -16783,23 +17068,23 @@
 		return result;
 	};
 
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var template=__webpack_require__(12);
 	module.exports=template('src/html/menu',' <ul class="clearfix" id="TMK_menus"> <li id="menu_pan" title="Pan: H"></li> <li id="menu_measure" class="current" title="Measure: D"></li> <li id="menu_close" title="Close" ></li> </ul> ');
 
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var template=__webpack_require__(12);
 	module.exports=template('src/html/scale',' <div class="scale-panel"> <span title="alrt+-" class="icon zoom-out"> <svg width="18" height="18" viewBox="0 0 32.09375 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g class="transform-group"><g transform="scale(0.03125, 0.03125)"><path d="M513.066667 1024c-136.533333 0-264.533333-51.2-362.666667-149.333333-200.533333-200.533333-200.533333-524.8 0-725.333333C248.533333 51.2 376.533333 0 513.066667 0s264.533333 51.2 362.666667 149.333333c200.533333 200.533333 200.533333 524.8 0 725.333333C777.6 972.8 649.6 1024 513.066667 1024zM513.066667 85.333333C397.866667 85.333333 291.2 128 210.133333 209.066667 43.733333 375.466667 43.733333 648.533333 210.133333 814.933333 291.2 896 397.866667 938.666667 513.066667 938.666667s221.866667-42.666667 302.933333-123.733333c166.4-166.4 166.4-435.2 0-601.6C734.933333 128 628.266667 85.333333 513.066667 85.333333zM726.4 554.666667 299.733333 554.666667c-25.6 0-42.666667-17.066667-42.666667-42.666667s17.066667-42.666667 42.666667-42.666667l426.666667 0c25.6 0 42.666667 17.066667 42.666667 42.666667S752 554.666667 726.4 554.666667z" fill="#272636"></path></g></g></svg> </span> <progress value="1" max="10"></progress> <span title="alt+=" class="icon zoom-in"> <svg width="18" height="18" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g class="transform-group"><g transform="scale(0.03125, 0.03125)"><path d="M544 256 480 256 480 480 256 480 256 544 480 544 480 768 544 768 544 544 768 544 768 480 544 480ZM512 0C229.218 0 0 229.218 0 512s229.218 512 512 512 512-229.218 512-512S794.782 0 512 0zM512 944c-238.594 0-432-193.406-432-432S273.406 80 512 80s432 193.406 432 432S750.594 944 512 944z" fill="#272636"></path></g></g></svg> </span> </div> ');
 
-/***/ },
-/* 35 */
-/***/ function(module, exports) {
+/***/ }),
+/* 36 */
+/***/ (function(module, exports) {
 
 	module.exports = function(module) {
 		if(!module.webpackPolyfill) {
@@ -16813,16 +17098,16 @@
 	}
 
 
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	
 	/*
 	*@description 图层
 	**/
 	
-	var zoom = __webpack_require__(3);
+	var zoom = __webpack_require__(2);
 	
 	var Layer = function(){
 	    this.paths={};
@@ -16875,9 +17160,9 @@
 	
 
 
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	
 	/*
@@ -16904,7 +17189,7 @@
 	    this.imgH = image.height;
 	}
 	
-	var zoom  = __webpack_require__(3);
+	var zoom  = __webpack_require__(2);
 	
 	//背景图
 	bg.drawBG = function(transform){
@@ -16931,9 +17216,9 @@
 	
 
 
-/***/ },
-/* 38 */
-/***/ function(module, exports) {
+/***/ }),
+/* 39 */
+/***/ (function(module, exports) {
 
 	
 	function detectOS() {
@@ -16984,21 +17269,21 @@
 	    isMobile : isMobile() 
 	}
 
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	
-	var $ = __webpack_require__(5);
-	var EventProxy = __webpack_require__(16);
-	var zoom = __webpack_require__(3);
-	var process = __webpack_require__(44);
-	var CommomCanvas = __webpack_require__(41);
-	var createStore = __webpack_require__(8).createStore;
-	var map = __webpack_require__(4);
-	var interpreter = __webpack_require__(42);
+	var $ = __webpack_require__(4);
+	var EventProxy = __webpack_require__(14);
+	var zoom = __webpack_require__(2);
+	var process = __webpack_require__(45);
+	var CommomCanvas = __webpack_require__(42);
+	var createStore = __webpack_require__(9).createStore;
+	var map = __webpack_require__(3);
+	var interpreter = __webpack_require__(43);
 	var TWEEN = __webpack_require__(13);
-	var detector = __webpack_require__(38),
+	var detector = __webpack_require__(39),
 	    isMac = detector.os === "Mac",
 	    isMobile = detector.isMobile ,
 	    vCanvas = null,
@@ -17259,9 +17544,9 @@
 	
 
 
-/***/ },
-/* 40 */
-/***/ function(module, exports) {
+/***/ }),
+/* 41 */
+/***/ (function(module, exports) {
 
 	
 	
@@ -17718,9 +18003,9 @@
 	
 
 
-/***/ },
-/* 41 */
-/***/ function(module, exports) {
+/***/ }),
+/* 42 */
+/***/ (function(module, exports) {
 
 	
 	/*
@@ -17757,9 +18042,9 @@
 	
 
 
-/***/ },
-/* 42 */
-/***/ function(module, exports) {
+/***/ }),
+/* 43 */
+/***/ (function(module, exports) {
 
 	
 	var interpreter = {};
@@ -17823,9 +18108,9 @@
 	
 
 
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*global define:false */
 	/**
@@ -18867,15 +19152,15 @@
 	}) (typeof window !== 'undefined' ? window : null, typeof  window !== 'undefined' ? document : null);
 
 
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	
-	var combineReducers = __webpack_require__(8).combineReducers;
-	var process = __webpack_require__(47);
-	var control = __webpack_require__(46);
-	var edit = __webpack_require__(45);
+	var combineReducers = __webpack_require__(9).combineReducers;
+	var process = __webpack_require__(48);
+	var control = __webpack_require__(47);
+	var edit = __webpack_require__(46);
 	
 	var reducers = combineReducers({
 	    draw:process,
@@ -18886,15 +19171,15 @@
 	module.exports = reducers;
 
 
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	
 	/*
 	*@description 编辑图形
 	*/
-	var map = __webpack_require__(4);
+	var map = __webpack_require__(3);
 	
 	var editGraphics = function (state, action) {
 	    state = state || {};
@@ -18964,16 +19249,16 @@
 	
 
 
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	
 	/*
 	*@description 操作面板
 	*/
 	
-	var zoom = __webpack_require__(3);
+	var zoom = __webpack_require__(2);
 	
 	var mapControl = function (state, action) {
 	    state = state || {};
@@ -19016,18 +19301,18 @@
 	
 
 
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	
 	/*
 	*@description 处理用户输入的数据
 	*/
 	
-	var LengthMark = __webpack_require__(40);
-	var bg = __webpack_require__(37);
-	var map = __webpack_require__(4);
+	var LengthMark = __webpack_require__(41);
+	var bg = __webpack_require__(38);
+	var map = __webpack_require__(3);
 	
 	var process = function (state, action) {
 	    state = state || { };
@@ -19082,5 +19367,5 @@
 	
 
 
-/***/ }
+/***/ })
 /******/ ]);

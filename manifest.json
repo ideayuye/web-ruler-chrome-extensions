@@ -1,23 +1,24 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
   "name": "web ruler",
   "description": "a ruler to measure web page",
   "version": "1.1",
 
-  "browser_action": {
+  "action": {
     "default_icon": "icon.png"
   },
-  "permissions": [
-    "activeTab",
-    "desktopCapture"
-  ],
-  "background":{
-      "persistent":false,
-      "scripts": ["index.js"]
+  "permissions": ["activeTab", "desktopCapture", "scripting"],
+  "background": {
+    "service_worker": "index.js"
   },
-  "icons":{
-    "48":"icon.png"
-  }
-
+  "icons": {
+    "48": "icon.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["/content.css", "/content_script.js"],
+      "matches": ["*://*/*"]
+    }
+  ]
 }
